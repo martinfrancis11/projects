@@ -1,0 +1,106 @@
+#!/bin/bash
+# Quick Setup Guide for Stock Market Monitor with Finnhub API
+
+cat << 'EOF'
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              STOCK MARKET MONITOR - FINNHUB SETUP GUIDE                   ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+QUICK START (3 Steps):
+
+1. GET FREE FINNHUB API KEY
+   ═══════════════════════════════════
+   Visit: https://finnhub.io/
+   - Click "Sign Up" (right side)
+   - Verify email
+   - Copy your API key from dashboard
+   - Free tier: 60 API calls/minute (perfect for monitoring!)
+   - No credit card required
+
+2. ADD KEY TO .env FILE
+   ═══════════════════════════════════
+   Edit: /Users/martinfrancis/projects/stock-market-monitor/.env
+   
+   Change this line:
+   FINNHUB_API_KEY=demo
+   
+   To:
+   FINNHUB_API_KEY=your_actual_key_here
+   
+   Save the file.
+
+3. RESTART & RUN
+   ═══════════════════════════════════
+   cd /Users/martinfrancis/projects/stock-market-monitor
+   source venv/bin/activate
+   
+   # Start web dashboard
+   python web_app.py
+   # Visit: http://localhost:5000
+   
+   # OR run CLI demo
+   python main.py --demo
+
+WHAT YOU'LL SEE:
+
+Web Dashboard Features:
+  ✓ Real-time stock prices from Finnhub API
+  ✓ Add/remove stocks from watchlist
+  ✓ Set price target alerts
+  ✓ Technical analysis (SMA, EMA, RSI)
+  ✓ Price history charts
+  ✓ Automatic price refreshes every 60 seconds
+
+CLI Features:
+  ✓ Stock watchlist display
+  ✓ Current prices
+  ✓ Alert triggers
+  ✓ Demo mode with random price variations
+
+TROUBLESHOOTING:
+
+Issue: "API rate limit" error
+└─ Solution: Finnhub free tier allows 60 calls/min
+   - If you hit the limit, wait 1-2 minutes
+   - Project caches prices for 1 minute to avoid this
+
+Issue: "Invalid API key"
+└─ Solution: Make sure key is in .env file correctly
+   - Check: cat .env
+   - Should show: FINNHUB_API_KEY=your_actual_key
+
+Issue: Still want to test without API key?
+└─ Solution: Use mock data mode temporarily
+   - Edit: config.py
+   - Change: USE_MOCK_DATA = True
+   - Then run the app again
+
+API KEY SECURITY:
+
+✓ .env file is in .gitignore (won't be committed)
+✓ API key is never shown in logs
+✓ Key only used for server-side API calls
+✓ Safe to use in any environment
+
+FINNHUB API FEATURES:
+
+With your Finnhub API key, you get:
+  • Real-time stock prices
+  • Company profile data
+  • Support for 30,000+ stocks
+  • 60 requests/minute (plenty!)
+  • No credit card required for free tier
+
+═══════════════════════════════════════════════════════════════════════════
+
+Questions? Check the project files:
+  - config.py          - Configuration settings
+  - stock_monitor.py   - Main monitoring logic
+  - web_app.py         - Web dashboard server
+
+Ready to start? Run: python web_app.py
+
+═══════════════════════════════════════════════════════════════════════════
+EOF

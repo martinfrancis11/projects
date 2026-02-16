@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Chart.js library for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📈 Stock Market Monitor</h1>
+            <p class="subtitle">Real-time stock price tracking with charts and technical analysis</p>
+        </header>
+
+        <div class="toolbar">
+            <button id="refreshBtn" class="btn btn-primary">🔄 Refresh Prices</button>
+            <button id="addStockBtn" class="btn btn-success">➕ Add Stock</button>
+            <span id="lastUpdate" class="last-update">Last updated: --:--:--</span>
+        </div>
+
+        <div id="alertsContainer" class="alerts-container" style="display: none;">
+            <div class="alerts-header">⚠️ Triggered Alerts</div>
+            <div id="alertsList"></div>
+        </div>
+
+        <div class="watchlist-section">
+            <h2>Watchlist</h2>
+            <div id="watchlistContainer" class="watchlist-grid">
+                <div class="loading">Loading stocks...</div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <h2>Stock Chart & Analysis</h2>
+            <div id="chartContainer" style="display: none;" class="chart-container">
+                <div class="chart-header">
+                    <h3 id="chartSymbol"></h3>
+                    <div class="chart-info">
+                        <span id="chartPrice" class="price-display">-</span>
+                        <span id="chartChange" class="price-change">-</span>
+                    </div>
+                </div>
+                
+                <div class="chart-tabs">
+                    <button class="tab-btn active" data-tab="price-chart">Price Chart</button>
+                    <button class="tab-btn" data-tab="volume-chart">Volume</button>
+                    <button class="tab-btn" data-tab="rsi-chart">RSI</button>
+                    <button class="tab-btn" data-tab="macd-chart">MACD</button>
+                </div>
+                
+                <div class="chart-content">
+                    <div id="price-chart" class="chart-tab active">
+                        <canvas id="priceChart"></canvas>
+                    </div>
+                    <div id="volume-chart" class="chart-tab">
+                        <canvas id="volumeChart"></canvas>
+                    </div>
+                    <div id="rsi-chart" class="chart-tab">
+                        <canvas id="rsiChart"></canvas>
+                    </div>
+                    <div id="macd-chart" class="chart-tab">
+                        <canvas id="macdChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="technical-indicators">
+                    <div class="indicator">
+                        <label>SMA 20:</label>
+                        <span id="sma20Value">-</span>
+                    </div>
+                    <div class="indicator">
+                        <label>SMA 50:</label>
+                        <span id="sma50Value">-</span>
+                    </div>
+                    <div class="indicator">
+                        <label>RSI 14:</label>
+                        <span id="rsi14Value">-</span>
+                    </div>
+                    <div class="indicator">
+                        <label>EMA 12:</label>
+                        <span id="ema12Value">-</span>
+                    </div>
+                    <div class="indicator">
+                        <label>EMA 26:</label>
+                        <span id="ema26Value">-</span>
+                    </div>
+                    <div class="indicator">
+                        <label>Volume:</label>
+                        <span id="volumeValue">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="noChartSelected" class="no-selection">
+                <p>Click on a stock to view its chart and technical analysis</p>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <h2>Technical Analysis</h2>
+            <div id="analysisContainer" class="analysis-grid">
+                <p>Select a stock to view analysis</p>
+            </div>
+        </div>
+
+        <div id="addStockModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Stock to Watchlist</h2>
+                <form id="addStockForm">
+                    <div class="form-group">
+                        <label>Stock Symbol:</label>
+                        <input type="text" id="symbolInput" placeholder="e.g., AAPL" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price Target (optional):</label>
+                        <input type="number" id="targetInput" placeholder="e.g., 150.00" step="0.01">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Stock</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

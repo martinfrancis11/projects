@@ -1,0 +1,221 @@
+.share-modal {
+  background: #f5efe0;
+  border-radius: 10px;
+  min-width: 460px;
+  max-width: 520px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+
+.share-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #2c1a0e, #4a3520);
+  border-bottom: 2px solid #6b4e2a;
+}
+
+.share-header h2 {
+  font-family: 'Georgia', serif;
+  font-size: 1.3rem;
+  color: #d4a855;
+  margin: 0 0 4px;
+}
+
+.share-book-title {
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  color: #c8a97a;
+  font-style: italic;
+  margin: 0;
+}
+
+.share-body {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.share-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.share-form label {
+  font-family: 'Georgia', serif;
+  font-size: 0.78rem;
+  font-weight: bold;
+  color: #4a3520;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.share-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.share-input-row input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #c8b89a;
+  border-radius: 6px;
+  background: #fffbf4;
+  font-family: 'Georgia', serif;
+  font-size: 0.95rem;
+  color: #2c1a0e;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.share-input-row input:focus {
+  border-color: #8b6020;
+  box-shadow: 0 0 0 3px rgba(139,96,32,0.15);
+}
+
+.share-input-row button {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #d4a855, #b8892a);
+  color: #1a1208;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.share-input-row button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e8bc69, #d4a855);
+}
+
+.share-input-row button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.share-msg {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.88rem;
+}
+
+.share-msg.ok {
+  background: #e8f4e8;
+  border-left: 3px solid #2e7d32;
+  color: #1a4a1a;
+}
+
+.share-msg.err {
+  background: #ffe8e8;
+  border-left: 3px solid #c0392b;
+  color: #7a1a1a;
+}
+
+.share-list-header {
+  font-family: 'Georgia', serif;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a6a3a;
+}
+
+.share-loading, .share-empty {
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  color: #9a7a50;
+  padding: 12px 0;
+  font-style: italic;
+}
+
+.share-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #e0d0b0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.share-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #ede0c8;
+  background: #fffbf4;
+}
+
+.share-item:last-child { border-bottom: none; }
+
+.share-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4a855, #8b6020);
+  color: #1a1208;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.share-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.share-item-name {
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  color: #2c1a0e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.share-item-email {
+  font-family: 'Georgia', serif;
+  font-size: 0.75rem;
+  color: #9a7a50;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.share-remove {
+  background: none;
+  border: none;
+  color: #b07050;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.share-remove:hover {
+  background: rgba(180,60,40,0.1);
+  color: #c0392b;
+}
+
+.share-note {
+  font-family: 'Georgia', serif;
+  font-size: 0.8rem;
+  color: #9a7a50;
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+}

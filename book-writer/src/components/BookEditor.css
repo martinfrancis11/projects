@@ -37,6 +37,45 @@
   color: #d4a855;
 }
 
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-share-book {
+  background: rgba(80,140,80,0.15);
+  border: 1px solid #3a6a3a;
+  color: #8acc8a;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-share-book:hover {
+  background: rgba(80,140,80,0.28);
+  border-color: #8acc8a;
+  color: #aaddaa;
+}
+
+.readonly-badge {
+  display: inline-block;
+  background: rgba(180,120,40,0.25);
+  color: #c8a060;
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 10px;
+  font-family: 'Georgia', serif;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 .btn-export-import {
   background: rgba(212,168,85,0.12);
   border: 1px solid #4a3520;

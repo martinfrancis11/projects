@@ -1,54 +1,57 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { getBook, saveBook, createChapter } from '../utils/storage';
+import { getCachedBooks, apiSaveBook } from '../utils/api';
+import { createChapter } from '../utils/storage';
 import ExportImportModal from './ExportImportModal';
+import ShareModal from './ShareModal';
 import './BookEditor.css';
 
-export default function BookEditor({ bookId, onBack }) {
-  const [book, setBook] = useState(null);
+export default function BookEditor({ bookId, readOnly, onBack }) {
+  const [book, setBook]                 = useState(null);
   const [activeChapterId, setActiveChapterId] = useState(null);
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingChapterTitle, setEditingChapterTitle] = useState(null);
-  const [saved, setSaved] = useState(true);
-  const [wordCount, setWordCount] = useState(0);
+  const [saved, setSaved]               = useState(true);
+  const [wordCount, setWordCount]       = useState(0);
   const [showExportImport, setShowExportImport] = useState(false);
+  const [showShare, setShowShare]       = useState(false);
   const saveTimer = useRef(null);
 
+  // Load book from cache (already fetched at login)
   useEffect(() => {
-    const b = getBook(bookId);
+    const { books, sharedBooks } = getCachedBooks();
+    const all = [...books, ...sharedBooks];
+    const b = all.find(x => (x.bookId || x.id) === bookId);
     if (b) {
       setBook(b);
-      setActiveChapterId(b.chapters[0]?.id || null);
+      setActiveChapterId(b.chapters?.[0]?.id || null);
     }
   }, [bookId]);
 
-  const activeChapter = book?.chapters?.find((c) => c.id === activeChapterId);
+  const activeChapter = book?.chapters?.find(c => c.id === activeChapterId);
 
-  const countWords = (text) => {
-    return text.trim() ? text.trim().split(/\s+/).length : 0;
-  };
+  const countWords = t => t.trim() ? t.trim().split(/\s+/).length : 0;
 
   useEffect(() => {
-    if (activeChapter) {
-      setWordCount(countWords(activeChapter.content));
-    }
+    if (activeChapter) setWordCount(countWords(activeChapter.content));
   }, [activeChapter]);
 
+  // Persist to API (debounced)
   const persistBook = useCallback((updatedBook) => {
-    const withTimestamp = { ...updatedBook, updatedAt: new Date().toISOString() };
-    saveBook(withTimestamp);
-    setSaved(true);
+    const b = { ...updatedBook, updatedAt: new Date().toISOString() };
+    apiSaveBook(b).then(() => setSaved(true)).catch(console.error);
   }, []);
 
   const scheduleAutoSave = useCallback((updatedBook) => {
     setSaved(false);
     if (saveTimer.current) clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(() => persistBook(updatedBook), 1000);
+    saveTimer.current = setTimeout(() => persistBook(updatedBook), 2000);
   }, [persistBook]);
 
   const handleContentChange = (content) => {
+    if (readOnly) return;
     const updated = {
       ...book,
-      chapters: book.chapters.map((c) =>
+      chapters: book.chapters.map(c =>
         c.id === activeChapterId ? { ...c, content } : c
       ),
     };
@@ -58,7 +61,7 @@ export default function BookEditor({ bookId, onBack }) {
   };
 
   const handleBookTitleSave = (newTitle) => {
-    if (!newTitle.trim()) return;
+    if (!newTitle.trim() || readOnly) return;
     const updated = { ...book, title: newTitle.trim() };
     setBook(updated);
     persistBook(updated);
@@ -66,10 +69,10 @@ export default function BookEditor({ bookId, onBack }) {
   };
 
   const handleChapterTitleSave = (chapterId, newTitle) => {
-    if (!newTitle.trim()) return;
+    if (!newTitle.trim() || readOnly) return;
     const updated = {
       ...book,
-      chapters: book.chapters.map((c) =>
+      chapters: book.chapters.map(c =>
         c.id === chapterId ? { ...c, title: newTitle.trim() } : c
       ),
     };
@@ -79,6 +82,7 @@ export default function BookEditor({ bookId, onBack }) {
   };
 
   const addChapter = () => {
+    if (readOnly) return;
     const chapter = createChapter(`Chapter ${book.chapters.length + 1}`);
     const updated = { ...book, chapters: [...book.chapters, chapter] };
     setBook(updated);
@@ -87,73 +91,73 @@ export default function BookEditor({ bookId, onBack }) {
   };
 
   const deleteChapter = (chapterId) => {
-    if (book.chapters.length <= 1) return;
-    const updated = {
-      ...book,
-      chapters: book.chapters.filter((c) => c.id !== chapterId),
-    };
+    if (readOnly || book.chapters.length <= 1) return;
+    const updated = { ...book, chapters: book.chapters.filter(c => c.id !== chapterId) };
     setBook(updated);
-    if (activeChapterId === chapterId) {
-      setActiveChapterId(updated.chapters[0]?.id || null);
-    }
+    if (activeChapterId === chapterId) setActiveChapterId(updated.chapters[0]?.id || null);
     persistBook(updated);
   };
 
   const handleImport = useCallback(({ chapters: newChapters }) => {
+    if (readOnly) return;
     const updated = { ...book, chapters: [...book.chapters, ...newChapters] };
     setBook(updated);
     persistBook(updated);
     setActiveChapterId(newChapters[0]?.id || activeChapterId);
-  }, [book, activeChapterId, persistBook]);
+  }, [book, activeChapterId, persistBook, readOnly]);
 
-  const totalWords = book?.chapters?.reduce(
-    (sum, c) => sum + countWords(c.content), 0
-  ) || 0;
+  const totalWords = book?.chapters?.reduce((s, c) => s + countWords(c.content), 0) || 0;
 
-  if (!book) return <div className="loading">Loading book...</div>;
+  if (!book) return <div className="loading">Loading book…</div>;
 
   return (
     <div className="book-editor">
       {/* Top bar */}
       <div className="editor-topbar">
-        <button className="btn-back" onClick={onBack}>
-          ← Library
-        </button>
+        <button className="btn-back" onClick={onBack}>← Library</button>
 
         <div className="editor-book-info">
-          {editingTitle ? (
-            <TitleInput
-              defaultValue={book.title}
-              onSave={handleBookTitleSave}
-              onCancel={() => setEditingTitle(false)}
-            />
+          {editingTitle && !readOnly ? (
+            <TitleInput defaultValue={book.title} onSave={handleBookTitleSave} onCancel={() => setEditingTitle(false)} />
           ) : (
-            <h1 className="editor-book-title" onClick={() => setEditingTitle(true)} title="Click to edit">
+            <h1
+              className="editor-book-title"
+              onClick={() => !readOnly && setEditingTitle(true)}
+              title={readOnly ? '' : 'Click to edit'}
+              style={{ cursor: readOnly ? 'default' : 'pointer' }}
+            >
               {book.title}
+              {readOnly && <span className="readonly-badge">Read Only</span>}
             </h1>
           )}
           <span className="editor-author">by {book.author}</span>
         </div>
 
-        <button className="btn-export-import" onClick={() => setShowExportImport(true)}>
-          ⇅ Export / Import
-        </button>
+        <div className="topbar-actions">
+          {!readOnly && (
+            <button className="btn-share-book" onClick={() => setShowShare(true)}>
+              ↗ Share
+            </button>
+          )}
+          <button className="btn-export-import" onClick={() => setShowExportImport(true)}>
+            ⇅ Export / Import
+          </button>
+        </div>
 
         <div className="editor-status">
-          <span className="word-total">{totalWords.toLocaleString()} words total</span>
-          <span className={`save-status ${saved ? 'saved' : 'unsaved'}`}>
-            {saved ? '✓ Saved' : '● Saving...'}
-          </span>
+          <span className="word-total">{totalWords.toLocaleString()} words</span>
+          {!readOnly && (
+            <span className={`save-status ${saved ? 'saved' : 'unsaved'}`}>
+              {saved ? '✓ Saved' : '● Saving…'}
+            </span>
+          )}
         </div>
       </div>
 
       {/* Main area */}
       <div className="editor-main">
-        {/* Left panel — Table of Contents */}
         <aside className="toc-panel">
-          <div className="toc-header">
-            <span>Contents</span>
-          </div>
+          <div className="toc-header"><span>Contents</span></div>
           <ul className="toc-list">
             {book.chapters.map((ch, idx) => (
               <li
@@ -161,10 +165,10 @@ export default function BookEditor({ bookId, onBack }) {
                 className={`toc-item ${ch.id === activeChapterId ? 'active' : ''}`}
                 onClick={() => setActiveChapterId(ch.id)}
               >
-                {editingChapterTitle === ch.id ? (
+                {editingChapterTitle === ch.id && !readOnly ? (
                   <TitleInput
                     defaultValue={ch.title}
-                    onSave={(t) => handleChapterTitleSave(ch.id, t)}
+                    onSave={t => handleChapterTitleSave(ch.id, t)}
                     onCancel={() => setEditingChapterTitle(null)}
                     small
                   />
@@ -173,55 +177,48 @@ export default function BookEditor({ bookId, onBack }) {
                     <span className="toc-num">{idx + 1}</span>
                     <span
                       className="toc-title"
-                      onDoubleClick={(e) => { e.stopPropagation(); setEditingChapterTitle(ch.id); }}
-                      title="Double-click to rename"
+                      onDoubleClick={e => { if (!readOnly) { e.stopPropagation(); setEditingChapterTitle(ch.id); } }}
+                      title={readOnly ? '' : 'Double-click to rename'}
                     >
                       {ch.title}
                     </span>
                     <span className="toc-words">{countWords(ch.content).toLocaleString()}w</span>
-                    {book.chapters.length > 1 && (
-                      <button
-                        className="toc-delete"
-                        title="Delete chapter"
-                        onClick={(e) => { e.stopPropagation(); deleteChapter(ch.id); }}
-                      >
-                        ✕
-                      </button>
+                    {!readOnly && book.chapters.length > 1 && (
+                      <button className="toc-delete" onClick={e => { e.stopPropagation(); deleteChapter(ch.id); }}>✕</button>
                     )}
                   </div>
                 )}
               </li>
             ))}
           </ul>
-          <button className="btn-add-chapter" onClick={addChapter}>
-            + Add Chapter
-          </button>
+          {!readOnly && (
+            <button className="btn-add-chapter" onClick={addChapter}>+ Add Chapter</button>
+          )}
         </aside>
 
-        {/* Book page */}
         <div className="book-page-container">
           <div className="book-page">
             <div className="page-header">
               <span className="page-book-title">{book.title}</span>
               <span className="page-chapter-title">{activeChapter?.title}</span>
             </div>
-
             <div className="page-content">
               {activeChapter && (
                 <textarea
                   className="page-textarea"
                   value={activeChapter.content}
-                  onChange={(e) => handleContentChange(e.target.value)}
-                  placeholder={`Begin writing ${activeChapter.title}...\n\nLet your story unfold here. The page is yours.`}
-                  spellCheck
+                  onChange={e => handleContentChange(e.target.value)}
+                  placeholder={readOnly ? '' : `Begin writing ${activeChapter.title}…\n\nLet your story unfold here.`}
+                  readOnly={readOnly}
+                  spellCheck={!readOnly}
+                  style={{ cursor: readOnly ? 'default' : 'text' }}
                 />
               )}
             </div>
-
             <div className="page-footer">
               <span className="page-words">{wordCount.toLocaleString()} words</span>
               <span className="page-chapter-num">
-                Chapter {book.chapters.findIndex((c) => c.id === activeChapterId) + 1} of {book.chapters.length}
+                Chapter {book.chapters.findIndex(c => c.id === activeChapterId) + 1} of {book.chapters.length}
               </span>
             </div>
           </div>
@@ -235,27 +232,32 @@ export default function BookEditor({ bookId, onBack }) {
           onImport={handleImport}
         />
       )}
+
+      {showShare && (
+        <ShareModal
+          book={book}
+          onClose={() => setShowShare(false)}
+        />
+      )}
     </div>
   );
 }
 
 function TitleInput({ defaultValue, onSave, onCancel, small }) {
   const [value, setValue] = useState(defaultValue);
-
-  const handleKey = (e) => {
+  const handleKey = e => {
     if (e.key === 'Enter') onSave(value);
     if (e.key === 'Escape') onCancel();
   };
-
   return (
     <input
       className={`inline-title-input ${small ? 'small' : ''}`}
       value={value}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={e => setValue(e.target.value)}
       onBlur={() => onSave(value)}
       onKeyDown={handleKey}
       autoFocus
-      onClick={(e) => e.stopPropagation()}
+      onClick={e => e.stopPropagation()}
     />
   );
 }

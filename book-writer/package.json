@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^6.3.16",
     "docx": "^9.6.1",
     "jspdf": "^4.2.0",
     "mammoth": "^1.12.0",

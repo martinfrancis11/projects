@@ -23,10 +23,140 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 48px;
+  padding: 18px 40px;
   background: linear-gradient(180deg, #0d0905 0%, #1a1208 100%);
   border-bottom: 2px solid #4a3520;
-  margin-bottom: 60px;
+  margin-bottom: 0;
+}
+
+.library-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4a855, #8b6020);
+  color: #1a1208;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.user-name {
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  color: #c8a97a;
+}
+
+.btn-signout {
+  background: none;
+  border: 1px solid #4a3520;
+  color: #8a6a3a;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-signout:hover {
+  border-color: #8a6a3a;
+  color: #c8a97a;
+}
+
+/* Tabs */
+.library-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 40px;
+  background: linear-gradient(180deg, #0d0905, #1a1208);
+  border-bottom: 2px solid #2e1f0e;
+  margin-bottom: 40px;
+}
+
+.lib-tab {
+  padding: 14px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  color: #6a4a2a;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lib-tab:hover { color: #c8a97a; }
+
+.lib-tab.active {
+  color: #d4a855;
+  border-bottom-color: #d4a855;
+}
+
+.tab-count {
+  background: rgba(212,168,85,0.2);
+  color: #c8a97a;
+  font-size: 0.72rem;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+.lib-tab.active .tab-count {
+  background: rgba(212,168,85,0.3);
+  color: #d4a855;
+}
+
+/* Loading / error */
+.library-loading, .library-error {
+  text-align: center;
+  padding: 60px 20px;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+}
+.library-loading { color: #8a6a3a; }
+.library-error   { color: #c05040; }
+
+/* Shared badge on book cover */
+.shared-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(212,168,85,0.9);
+  color: #1a1208;
+  font-family: 'Georgia', serif;
+  font-size: 0.6rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.book-cover-sharedby {
+  font-family: 'Georgia', serif;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.55);
+  font-style: italic;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 4px;
+  margin-top: 4px;
 }
 
 .library-title-area {

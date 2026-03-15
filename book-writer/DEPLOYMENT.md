@@ -7,6 +7,18 @@
 | **CloudFront (HTTPS)** | https://d3lvmi2zmb9gkw.cloudfront.net |
 | S3 Website (HTTP) | http://book-writer-app-857590206967.s3-website-us-east-1.amazonaws.com |
 
+## Auth & Backend
+
+| Resource | Value |
+|---|---|
+| Cognito User Pool ID | `us-east-1_w9AmzY6D3` |
+| Cognito Client ID | `20fnjsbakh8ag6kanaviug0fae` |
+| API Gateway ID | `no4ps0813m` |
+| API URL | `https://no4ps0813m.execute-api.us-east-1.amazonaws.com/prod` |
+| Lambda Function | `book-writer-api` |
+| DynamoDB Books Table | `BookWriterBooks` |
+| DynamoDB Shares Table | `BookWriterShares` |
+
 ## AWS Resources
 
 | Resource | Value |

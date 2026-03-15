@@ -117,3 +117,14 @@ Currently, two official plugins are available:
   ├──────────────────────────────────┼───────────────────────────────┤
   │ Is it slow?                      │ Lambda → Duration metric      │
   └──────────────────────────────────┴───────────────────────────────┘
+
+    Here's the storage breakdown:                                                                                                                              
+                                                                                                                                                             
+  ┌──────────────────────────────────────────────┬─────────────────────────────────────────┐                                                                 
+  │                     Data                     │                  Where                  │                                                                 
+  ├──────────────────────────────────────────────┼─────────────────────────────────────────┤                                                                 
+  │ Book content (title, author, chapters, text) │ DynamoDB table: BookWriterBooks         │
+  ├──────────────────────────────────────────────┼─────────────────────────────────────────┤
+  │ Share records (who shared with whom)         │ DynamoDB table: BookWriterShares        │                                                                 
+  ├──────────────────────────────────────────────┼─────────────────────────────────────────┤                                                                 
+  │ Frontend app files (HTML/JS/CSS)             │ S3 bucket: book-writer-app-857590206967 │    

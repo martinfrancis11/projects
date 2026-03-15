@@ -9,9 +9,10 @@ import {
   PageBreak,
   Header,
   Footer,
-  PageNumberElement,
+  PageNumber,
   convertInchesToTwip,
   PageOrientation,
+  BorderStyle,
 } from 'docx';
 
 // ─── KDP 6×9 Constants ────────────────────────────────────────────────────────
@@ -299,127 +300,61 @@ export const exportToPDF = (book) => {
 // ─── Word Export (KDP 6×9) ────────────────────────────────────────────────────
 
 export const exportToWord = async (book) => {
-  // 1 inch = 1440 twips
   const in2t = convertInchesToTwip;
+  const year = new Date(book.createdAt).getFullYear();
 
-  // Section properties shared across all sections
-  const sectionProps = {
-    page: {
-      size: {
-        orientation: PageOrientation.PORTRAIT,
-        width:  in2t(6),
-        height: in2t(9),
-      },
-      margin: {
-        top:    in2t(0.75),
-        bottom: in2t(0.75),
-        left:   in2t(0.75), // inside/gutter (mirrors to outside on even pages)
-        right:  in2t(0.5),  // outside
-        gutter: in2t(0),
-        header: in2t(0.4),
-        footer: in2t(0.4),
-        mirror: true,       // enable mirror margins for book layout
-      },
-    },
-  };
+  // ── Helpers ──────────────────────────────────────────────────────────────────
 
-  // ── Shared header/footer factories ──────────────────────────────────────────
-
-  // Verso header: book title (left/outer)
-  const versoHeader = new Header({
-    children: [
-      new Paragraph({
-        children: [new TextRun({ text: book.title, italics: true, size: 16, color: '7A6040' })],
-        alignment: AlignmentType.LEFT,
-        border: { bottom: { color: 'B09060', size: 4, space: 4, style: 'single' } },
-      }),
-    ],
-  });
-
-  // Recto header: author name (right/outer)
-  const rectoHeader = new Header({
-    children: [
-      new Paragraph({
-        children: [new TextRun({ text: book.author, italics: true, size: 16, color: '7A6040' })],
-        alignment: AlignmentType.RIGHT,
-        border: { bottom: { color: 'B09060', size: 4, space: 4, style: 'single' } },
-      }),
-    ],
-  });
-
-  // Blank header for chapter-opening pages
-  const blankHeader = new Header({ children: [new Paragraph({ children: [] })] });
-
-  // Verso footer: page number left
-  const versoFooter = new Footer({
-    children: [
-      new Paragraph({
-        children: [new PageNumberElement()],
-        alignment: AlignmentType.LEFT,
-      }),
-    ],
-  });
-
-  // Recto footer: page number right
-  const rectoFooter = new Footer({
-    children: [
-      new Paragraph({
-        children: [new PageNumberElement()],
-        alignment: AlignmentType.RIGHT,
-      }),
-    ],
-  });
-
-  // Blank footer for chapter-opening
-  const blankFooter = new Footer({ children: [new Paragraph({ children: [] })] });
-
-  // ── Body paragraph style ─────────────────────────────────────────────────────
   const bodyPara = (text, firstInChapter = false) =>
     new Paragraph({
-      children: [new TextRun({ text, font: 'Times New Roman', size: 22 })], // 11pt
+      children: [new TextRun({ text, font: 'Times New Roman', size: 22 })],
       alignment: AlignmentType.JUSTIFIED,
       indent: firstInChapter ? undefined : { firstLine: in2t(0.3) },
-      spacing: { line: 276, lineRule: 'auto', after: 0 }, // ~1.15 spacing
+      spacing: { line: 276, lineRule: 'auto', after: 0 },
     });
 
-  // ── Front-matter section ─────────────────────────────────────────────────────
-  const frontMatterChildren = [
-    // Half-title
+  const spacer = (before = 0) =>
+    new Paragraph({ children: [new TextRun('')], spacing: { before } });
+
+  // ── All content in a single section (most Word-compatible) ───────────────────
+  const children = [
+
+    // ── Half-title ──────────────────────────────────────────────────────────────
     new Paragraph({
-      children: [new TextRun({ text: book.title, bold: true, size: 40, font: 'Times New Roman' })],
+      children: [new TextRun({ text: book.title, bold: true, size: 48, font: 'Times New Roman' })],
       alignment: AlignmentType.CENTER,
       spacing: { before: in2t(2.5), after: in2t(0.5) },
     }),
     new Paragraph({ children: [new PageBreak()] }),
 
-    // Copyright page (verso)
+    // ── Copyright ───────────────────────────────────────────────────────────────
+    spacer(in2t(4)),
     new Paragraph({
-      children: [new TextRun({ text: `Copyright © ${new Date(book.createdAt).getFullYear()} ${book.author}`, size: 18, font: 'Times New Roman' })],
+      children: [new TextRun({ text: `Copyright \u00A9 ${year} ${book.author}`, size: 18, font: 'Times New Roman' })],
       alignment: AlignmentType.CENTER,
-      spacing: { before: in2t(4), after: in2t(0.15) },
     }),
     new Paragraph({
       children: [new TextRun({ text: 'All rights reserved.', size: 18, font: 'Times New Roman' })],
       alignment: AlignmentType.CENTER,
-      spacing: { after: in2t(0.15) },
+      spacing: { after: in2t(0.2) },
     }),
     new Paragraph({
       children: [new TextRun({ text: `Genre: ${book.genre}`, size: 18, font: 'Times New Roman', italics: true })],
       alignment: AlignmentType.CENTER,
-      spacing: { before: in2t(0.3) },
     }),
     new Paragraph({ children: [new PageBreak()] }),
 
-    // Title page (recto)
+    // ── Title page ──────────────────────────────────────────────────────────────
+    spacer(in2t(1.5)),
     new Paragraph({
-      children: [new TextRun({ text: book.title, bold: true, size: 52, font: 'Times New Roman' })],
+      children: [new TextRun({ text: book.title, bold: true, size: 56, font: 'Times New Roman' })],
       alignment: AlignmentType.CENTER,
-      spacing: { before: in2t(1.5), after: in2t(0.3) },
+      spacing: { after: in2t(0.3) },
     }),
     new Paragraph({
       children: [new TextRun({ text: `by ${book.author}`, italics: true, size: 28, font: 'Times New Roman', color: '6B4E2A' })],
       alignment: AlignmentType.CENTER,
-      spacing: { after: in2t(0.2) },
+      spacing: { after: in2t(0.15) },
     }),
     new Paragraph({
       children: [new TextRun({ text: book.genre.toUpperCase(), size: 18, font: 'Times New Roman', color: '8C7050' })],
@@ -427,102 +362,114 @@ export const exportToWord = async (book) => {
     }),
     new Paragraph({ children: [new PageBreak()] }),
 
-    // Table of contents heading (verso)
+    // ── Table of Contents ────────────────────────────────────────────────────────
     new Paragraph({
-      text: 'Contents',
-      heading: HeadingLevel.HEADING_1,
+      children: [new TextRun({ text: 'Contents', bold: true, size: 36, font: 'Times New Roman' })],
       alignment: AlignmentType.CENTER,
-      spacing: { after: in2t(0.3) },
+      spacing: { before: in2t(0.5), after: in2t(0.4) },
     }),
     ...book.chapters.map((ch, idx) =>
       new Paragraph({
-        children: [
-          new TextRun({ text: `${idx + 1}.\t${ch.title}`, font: 'Times New Roman', size: 22 }),
-        ],
-        alignment: AlignmentType.LEFT,
-        spacing: { after: in2t(0.08) },
-        indent: { left: in2t(0.2) },
+        children: [new TextRun({ text: `${idx + 1}.\u2003${ch.title}`, font: 'Times New Roman', size: 22 })],
+        spacing: { after: in2t(0.1) },
+        indent: { left: in2t(0.3) },
       })
     ),
     new Paragraph({ children: [new PageBreak()] }),
-  ];
 
-  // ── Chapter sections ──────────────────────────────────────────────────────────
-  const chapterSections = book.chapters.map((chapter, idx) => {
-    const paras = (chapter.content || '').split(/\n+/).filter(Boolean);
-
-    return {
-      properties: {
-        ...sectionProps,
-        titlePage: true, // suppress header/footer on this section's first page
-      },
-      headers: {
-        default: rectoHeader,
-        even:    versoHeader,
-        first:   blankHeader,  // chapter-opening page: no header
-      },
-      footers: {
-        default: rectoFooter,
-        even:    versoFooter,
-        first:   blankFooter,  // chapter-opening page: centered page number only
-      },
-      children: [
-        // Chapter number label
+    // ── Chapters ─────────────────────────────────────────────────────────────────
+    ...book.chapters.flatMap((chapter, idx) => {
+      const paras = (chapter.content || '').split(/\n+/).filter(Boolean);
+      const isLast = idx === book.chapters.length - 1;
+      return [
+        spacer(in2t(1.2)),
         new Paragraph({
           children: [new TextRun({ text: `Chapter ${idx + 1}`, italics: true, size: 20, font: 'Times New Roman', color: '8C7050' })],
           alignment: AlignmentType.CENTER,
-          spacing: { before: in2t(1.2), after: in2t(0.1) },
+          spacing: { after: in2t(0.1) },
         }),
-        // Chapter title
         new Paragraph({
           children: [new TextRun({ text: chapter.title, bold: true, size: 36, font: 'Times New Roman' })],
           alignment: AlignmentType.CENTER,
-          spacing: { before: 0, after: in2t(0.5) },
-        }),
-        // Ornament
-        new Paragraph({
-          children: [new TextRun({ text: '* * *', size: 24, font: 'Times New Roman', color: '8C7050' })],
-          alignment: AlignmentType.CENTER,
           spacing: { after: in2t(0.4) },
         }),
-        // Body paragraphs
+        new Paragraph({
+          children: [new TextRun({ text: '* * *', size: 22, font: 'Times New Roman', color: '8C7050' })],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: in2t(0.35) },
+        }),
         ...paras.map((p, pIdx) => bodyPara(p, pIdx === 0)),
-      ],
-    };
-  });
+        ...(isLast ? [] : [new Paragraph({ children: [new PageBreak()] })]),
+      ];
+    }),
+  ];
 
+  // ── Document ─────────────────────────────────────────────────────────────────
   const wordDoc = new Document({
     title: book.title,
     creator: book.author,
-    description: `${book.genre} — Amazon KDP 6×9 format`,
-    evenAndOddHeaderAndFooters: true, // required for mirror headers/footers
-    styles: {
-      paragraphStyles: [
-        {
-          id: 'Heading1',
-          name: 'Heading 1',
-          run: { font: 'Times New Roman', size: 32, bold: true, color: '1E1208' },
-          paragraph: { alignment: AlignmentType.CENTER, spacing: { before: in2t(0.5), after: in2t(0.3) } },
-        },
-      ],
-    },
+    description: `${book.genre} \u2014 Amazon KDP 6\u00D79 format`,
     sections: [
-      // Front matter
       {
-        properties: { ...sectionProps, titlePage: true },
-        headers: { default: blankHeader, even: blankHeader, first: blankHeader },
-        footers: { default: blankFooter, even: blankFooter, first: blankFooter },
-        children: frontMatterChildren,
+        properties: {
+          page: {
+            size: {
+              orientation: PageOrientation.PORTRAIT,
+              width:  in2t(6),
+              height: in2t(9),
+            },
+            margin: {
+              top:    in2t(0.75),
+              bottom: in2t(0.75),
+              left:   in2t(0.75),
+              right:  in2t(0.5),
+              header: in2t(0.4),
+              footer: in2t(0.4),
+            },
+          },
+        },
+        headers: {
+          default: new Header({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({ text: book.title, italics: true, size: 16, color: '7A6040' }),
+                  new TextRun({ text: '   \u2014   ', size: 16, color: 'B09060' }),
+                  new TextRun({ text: book.author, italics: true, size: 16, color: '7A6040' }),
+                ],
+                alignment: AlignmentType.CENTER,
+                border: {
+                  bottom: { color: 'C8A870', size: 4, space: 4, style: BorderStyle.SINGLE },
+                },
+              }),
+            ],
+          }),
+        },
+        footers: {
+          default: new Footer({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    children: [PageNumber.CURRENT],
+                    size: 16,
+                    color: '7A6040',
+                  }),
+                ],
+                alignment: AlignmentType.CENTER,
+              }),
+            ],
+          }),
+        },
+        children,
       },
-      // One section per chapter (so each can have a blank header on its first page)
-      ...chapterSections,
     ],
   });
 
   const blob = await Packer.toBlob(wordDoc);
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
   a.download = `${sanitizeFilename(book.title)}_KDP_6x9.docx`;
   a.click();
   URL.revokeObjectURL(url);

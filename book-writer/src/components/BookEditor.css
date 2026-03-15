@@ -1,0 +1,431 @@
+.book-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #2c1f10;
+  overflow: hidden;
+}
+
+/* Top bar */
+.editor-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: linear-gradient(180deg, #0d0905, #1a1208);
+  border-bottom: 2px solid #4a3520;
+  flex-shrink: 0;
+  gap: 20px;
+}
+
+.btn-back {
+  background: none;
+  border: 1px solid #4a3520;
+  color: #c8a97a;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: #d4a855;
+  color: #d4a855;
+}
+
+.btn-export-import {
+  background: rgba(212,168,85,0.12);
+  border: 1px solid #4a3520;
+  color: #c8a97a;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-export-import:hover {
+  background: rgba(212,168,85,0.22);
+  border-color: #d4a855;
+  color: #d4a855;
+}
+
+.editor-book-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.editor-book-title {
+  font-family: 'Georgia', serif;
+  font-size: 1.4rem;
+  color: #d4a855;
+  margin: 0;
+  cursor: pointer;
+  transition: color 0.15s;
+  text-align: center;
+}
+
+.editor-book-title:hover {
+  color: #e8bc69;
+}
+
+.editor-author {
+  font-family: 'Georgia', serif;
+  font-size: 0.8rem;
+  color: #8a6a3a;
+  font-style: italic;
+}
+
+.editor-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.word-total {
+  font-family: 'Georgia', serif;
+  font-size: 0.78rem;
+  color: #8a6a3a;
+}
+
+.save-status {
+  font-family: 'Georgia', serif;
+  font-size: 0.78rem;
+  transition: color 0.3s;
+}
+
+.save-status.saved {
+  color: #5a9a5a;
+}
+
+.save-status.unsaved {
+  color: #c8a020;
+}
+
+/* Main layout */
+.editor-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* TOC Panel */
+.toc-panel {
+  width: 230px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #1e1408, #261a0a);
+  border-right: 2px solid #4a3520;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.toc-header {
+  padding: 16px 18px 12px;
+  font-family: 'Georgia', serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8a6a3a;
+  border-bottom: 1px solid #3a2810;
+  flex-shrink: 0;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.toc-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.toc-list::-webkit-scrollbar-track {
+  background: #1a1208;
+}
+
+.toc-list::-webkit-scrollbar-thumb {
+  background: #4a3520;
+  border-radius: 2px;
+}
+
+.toc-item {
+  padding: 0 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.toc-item:hover {
+  background: rgba(212,168,85,0.08);
+}
+
+.toc-item.active {
+  border-left-color: #d4a855;
+  background: rgba(212,168,85,0.12);
+}
+
+.toc-item-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  min-height: 40px;
+}
+
+.toc-num {
+  font-family: 'Georgia', serif;
+  font-size: 0.7rem;
+  color: #6a4a2a;
+  min-width: 16px;
+}
+
+.toc-title {
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  color: #c8a97a;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toc-item.active .toc-title {
+  color: #d4a855;
+}
+
+.toc-words {
+  font-family: 'Georgia', serif;
+  font-size: 0.65rem;
+  color: #5a4020;
+}
+
+.toc-delete {
+  background: none;
+  border: none;
+  color: #5a3020;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+  line-height: 1;
+}
+
+.toc-item:hover .toc-delete {
+  opacity: 1;
+}
+
+.toc-delete:hover {
+  color: #d44040;
+  background: rgba(180,40,40,0.15);
+}
+
+.btn-add-chapter {
+  margin: 12px;
+  padding: 10px;
+  background: rgba(212,168,85,0.1);
+  border: 1px dashed #4a3520;
+  border-radius: 6px;
+  color: #8a6a3a;
+  font-family: 'Georgia', serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-add-chapter:hover {
+  background: rgba(212,168,85,0.18);
+  border-color: #d4a855;
+  color: #d4a855;
+}
+
+/* Book page */
+.book-page-container {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 60px;
+  overflow-y: auto;
+  background: radial-gradient(ellipse at center, #3a2810 0%, #1a1208 100%);
+}
+
+.book-page-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.book-page-container::-webkit-scrollbar-track {
+  background: #1a1208;
+}
+
+.book-page-container::-webkit-scrollbar-thumb {
+  background: #4a3520;
+  border-radius: 4px;
+}
+
+.book-page {
+  width: 100%;
+  max-width: 680px;
+  min-height: calc(100vh - 200px);
+  background: #fdf8ee;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 31px,
+      rgba(180,150,100,0.12) 31px,
+      rgba(180,150,100,0.12) 32px
+    );
+  box-shadow:
+    -4px 0 8px rgba(0,0,0,0.2),
+    4px 4px 20px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(180,140,80,0.3);
+  border-radius: 2px 4px 4px 2px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-page::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(0,0,0,0.15), transparent);
+  pointer-events: none;
+}
+
+.book-page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255,255,255,0.08) 0%,
+    transparent 40%
+  );
+  pointer-events: none;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 48px 12px;
+  border-bottom: 1px solid rgba(140,100,60,0.25);
+  margin-bottom: 8px;
+}
+
+.page-book-title {
+  font-family: 'Georgia', serif;
+  font-size: 0.75rem;
+  color: #8a7050;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.page-chapter-title {
+  font-family: 'Georgia', serif;
+  font-size: 0.75rem;
+  color: #8a7050;
+  font-style: italic;
+}
+
+.page-content {
+  flex: 1;
+  padding: 16px 56px 24px;
+}
+
+.page-textarea {
+  width: 100%;
+  min-height: 600px;
+  border: none;
+  background: transparent;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.05rem;
+  line-height: 2rem;
+  color: #2c1a0e;
+  resize: none;
+  outline: none;
+  padding: 0;
+}
+
+.page-textarea::placeholder {
+  color: #c0a880;
+  font-style: italic;
+}
+
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 48px 20px;
+  border-top: 1px solid rgba(140,100,60,0.25);
+}
+
+.page-words {
+  font-family: 'Georgia', serif;
+  font-size: 0.72rem;
+  color: #8a7050;
+}
+
+.page-chapter-num {
+  font-family: 'Georgia', serif;
+  font-size: 0.72rem;
+  color: #8a7050;
+}
+
+/* Inline title editor */
+.inline-title-input {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid #d4a855;
+  border-radius: 4px;
+  color: #d4a855;
+  font-family: 'Georgia', serif;
+  font-size: 1.3rem;
+  padding: 4px 10px;
+  outline: none;
+  text-align: center;
+  min-width: 300px;
+}
+
+.inline-title-input.small {
+  font-size: 0.82rem;
+  padding: 3px 6px;
+  min-width: 0;
+  width: 100%;
+  color: #c8a97a;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: 'Georgia', serif;
+  font-size: 1.2rem;
+  color: #8a6a3a;
+  background: #1a1208;
+}

@@ -1,0 +1,25 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: #1a1208;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Scrollbar defaults */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4a3520 #1a1208;
+}

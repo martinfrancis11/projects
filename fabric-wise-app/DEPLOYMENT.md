@@ -1,4 +1,4 @@
-# FabricWise — AWS Deployment Details
+# FabricIntel — AWS Deployment Details
 
 ## Live URL
 

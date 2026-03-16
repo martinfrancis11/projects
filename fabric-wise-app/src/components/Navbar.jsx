@@ -10,7 +10,7 @@ const navLinks = [
   { to: '/health',   label: 'Health',     icon: '💚' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onHelp }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const close = () => setMenuOpen(false);
@@ -21,7 +21,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="navbar-logo" onClick={close}>
           <span className="navbar-logo-icon">🌿</span>
-          <span className="navbar-logo-text">FabricWise</span>
+          <span className="navbar-logo-text">FabricIntel</span>
         </Link>
 
         {/* Desktop links */}
@@ -40,6 +40,11 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+
+        {/* Help button */}
+        <button className="navbar-help" onClick={onHelp} aria-label="Help">
+          ?
+        </button>
 
         {/* Premium CTA */}
         <Link to="/premium" className="navbar-premium" onClick={close}>
@@ -73,6 +78,9 @@ export default function Navbar() {
             {label}
           </NavLink>
         ))}
+        <button className="navbar-mobile-help" onClick={() => { close(); onHelp?.(); }}>
+          ? Help
+        </button>
         <Link to="/premium" className="navbar-mobile-premium" onClick={close}>
           ⭐ Go Premium
         </Link>

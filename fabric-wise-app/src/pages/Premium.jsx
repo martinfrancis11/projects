@@ -36,7 +36,7 @@ const premiumPerks = [
   {
     icon: '🚨',
     title: 'Allergen Alerts',
-    desc: 'Set your known allergens. FabricWise will warn you before you buy or wear a risky fabric.',
+    desc: 'Set your known allergens. FabricIntel will warn you before you buy or wear a risky fabric.',
     soon: false,
   },
   {
@@ -75,7 +75,7 @@ export default function Premium() {
   return (
     <div className="premium-page">
       <div className="premium-hero">
-        <div className="premium-hero-badge">⭐ FabricWise Premium</div>
+        <div className="premium-hero-badge">⭐ FabricIntel Premium</div>
         <h1>Upgrade for Your Skin's Sake</h1>
         <p>
           Get personalised fabric recommendations, allergen alerts, scan history,

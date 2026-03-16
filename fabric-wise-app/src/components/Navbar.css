@@ -77,6 +77,29 @@
   font-size: 0.95rem;
 }
 
+/* Help button */
+.navbar-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ade80;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.navbar-help:hover {
+  background: rgba(74, 222, 128, 0.22);
+  border-color: #4ade80;
+}
+
 /* Premium CTA */
 .navbar-premium {
   display: inline-flex;
@@ -172,6 +195,26 @@
   background: rgba(74, 222, 128, 0.08);
 }
 
+.navbar-mobile-help {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  color: #4ade80;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.navbar-mobile-help:hover {
+  background: rgba(74, 222, 128, 0.06);
+}
+
 .navbar-mobile-premium {
   display: flex;
   align-items: center;
@@ -186,7 +229,8 @@
 /* Responsive */
 @media (max-width: 768px) {
   .navbar-links,
-  .navbar-premium {
+  .navbar-premium,
+  .navbar-help {
     display: none;
   }
 

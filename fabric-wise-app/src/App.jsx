@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import OnboardingModal from './components/OnboardingModal';
 import Home from './pages/Home';
 import FabricLibrary from './pages/FabricLibrary';
 import FabricDetail from './pages/FabricDetail';
@@ -11,9 +13,21 @@ import Premium from './pages/Premium';
 import './App.css';
 
 export default function App() {
+  const [showHelp, setShowHelp] = useState(false);
+
+  const openHelp = () => {
+    localStorage.removeItem('fw_onboarding_done');
+    setShowHelp(true);
+  };
+
+  const closeHelp = () => {
+    localStorage.setItem('fw_onboarding_done', '1');
+    setShowHelp(false);
+  };
+
   return (
     <div className="app">
-      <Navbar />
+      <Navbar onHelp={openHelp} />
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -26,6 +40,7 @@ export default function App() {
           <Route path="/premium" element={<Premium />} />
         </Routes>
       </main>
+      <OnboardingModal key={showHelp} onClose={closeHelp} />
     </div>
   );
 }

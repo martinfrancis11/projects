@@ -13,6 +13,7 @@ import {
   convertInchesToTwip,
   PageOrientation,
   BorderStyle,
+  ImageRun,
 } from 'docx';
 
 // ─── KDP 6×9 Constants ────────────────────────────────────────────────────────
@@ -52,7 +53,7 @@ const versoLeft  = KDP.marginOutside;
 
 // ─── PDF Export ───────────────────────────────────────────────────────────────
 
-export const exportToPDF = (book) => {
+export const exportToPDF = async (book) => {
   const doc = new jsPDF({
     unit: 'mm',
     format: [KDP.W, KDP.H],
@@ -223,21 +224,20 @@ export const exportToPDF = (book) => {
   // Page numbers for body start at arabic 1 from chapter 1
   let arabicNum = 1;
 
-  book.chapters.forEach((chapter, chIdx) => {
+  for (let chIdx = 0; chIdx < book.chapters.length; chIdx++) {
+    const chapter = book.chapters[chIdx];
+
     // Ensure chapters start on a recto (odd) page — KDP standard
     doc.addPage();
     pageNum++;
     if (pageNum % 2 === 0) {
-      // Landed on verso — add a blank recto page first
       fillPage();
-      // blank verso — no header, no page number
       doc.addPage();
       pageNum++;
       arabicNum++;
     }
 
     fillPage();
-    // NO running header on chapter opening page (KDP standard)
 
     const lm = leftMargin();
 
@@ -254,15 +254,32 @@ export const exportToPDF = (book) => {
     const chTitleLines = doc.splitTextToSize(chapter.title, KDP.textWidth);
     doc.text(chTitleLines, KDP.W / 2, KDP.marginTop + 24, { align: 'center' });
 
-    // Ornamental separator (three asterisks — common in KDP books)
+    // Ornamental separator
     doc.setFont('Times', 'normal');
     doc.setFontSize(14);
     doc.setTextColor(140, 110, 75);
     const sepY = KDP.marginTop + 24 + chTitleLines.length * 7 + 8;
     doc.text('* * *', KDP.W / 2, sepY, { align: 'center' });
 
-    // Body text
+    // Chapter image (if present)
     let y = sepY + 12;
+    if (chapter.imageUrl) {
+      try {
+        const imgDataURL = await fetchAsDataURL(chapter.imageUrl);
+        const aspect = chapter.imageHeight && chapter.imageWidth
+          ? chapter.imageHeight / chapter.imageWidth : 0.75;
+        const imgW = Math.min(KDP.textWidth, 100);
+        const imgH = imgW * aspect;
+        const imgX = lm + (KDP.textWidth - imgW) / 2;
+        const imageType = imgDataURL.startsWith('data:image/png') ? 'PNG' : 'JPEG';
+        doc.addImage(imgDataURL, imageType, imgX, y, imgW, imgH);
+        y += imgH + 10;
+      } catch (e) {
+        console.warn('Could not load chapter image for PDF:', e);
+      }
+    }
+
+    // Body text
     const paragraphs = (chapter.content || '').split(/\n+/).filter(Boolean);
     const bottomBoundary = KDP.H - KDP.marginBottom;
 
@@ -270,7 +287,8 @@ export const exportToPDF = (book) => {
     doc.setFontSize(KDP.bodyFontSize);
     doc.setTextColor(20, 12, 4);
 
-    paragraphs.forEach((para, pIdx) => {
+    for (let pIdx = 0; pIdx < paragraphs.length; pIdx++) {
+      const para = paragraphs[pIdx];
       const textX = pageNum % 2 === 1 ? rectoLeft : versoLeft;
       const paraLines = doc.splitTextToSize(para, KDP.textWidth);
 
@@ -284,15 +302,14 @@ export const exportToPDF = (book) => {
         y = KDP.marginTop + 2;
       }
 
-      // First paragraph of chapter: no indent. All others: 0.3" (7.6mm) indent.
       const indent = pIdx === 0 ? 0 : 7.6;
       doc.text(paraLines, textX + indent, y, { align: 'justify', maxWidth: KDP.textWidth - indent });
       y += paraLines.length * KDP.lineHeight + 1.5;
-    });
+    }
 
     addPageNumber(arabicNum);
     arabicNum++;
-  });
+  }
 
   doc.save(`${sanitizeFilename(book.title)}_KDP_6x9.pdf`);
 };
@@ -377,32 +394,58 @@ export const exportToWord = async (book) => {
     ),
     new Paragraph({ children: [new PageBreak()] }),
 
-    // ── Chapters ─────────────────────────────────────────────────────────────────
-    ...book.chapters.flatMap((chapter, idx) => {
-      const paras = (chapter.content || '').split(/\n+/).filter(Boolean);
-      const isLast = idx === book.chapters.length - 1;
-      return [
-        spacer(in2t(1.2)),
-        new Paragraph({
-          children: [new TextRun({ text: `Chapter ${idx + 1}`, italics: true, size: 20, font: 'Times New Roman', color: '8C7050' })],
-          alignment: AlignmentType.CENTER,
-          spacing: { after: in2t(0.1) },
-        }),
-        new Paragraph({
-          children: [new TextRun({ text: chapter.title, bold: true, size: 36, font: 'Times New Roman' })],
-          alignment: AlignmentType.CENTER,
-          spacing: { after: in2t(0.4) },
-        }),
-        new Paragraph({
-          children: [new TextRun({ text: '* * *', size: 22, font: 'Times New Roman', color: '8C7050' })],
-          alignment: AlignmentType.CENTER,
-          spacing: { after: in2t(0.35) },
-        }),
-        ...paras.map((p, pIdx) => bodyPara(p, pIdx === 0)),
-        ...(isLast ? [] : [new Paragraph({ children: [new PageBreak()] })]),
-      ];
-    }),
   ];
+
+  // ── Chapters (built with for loop to support async image loading) ─────────────
+  for (let idx = 0; idx < book.chapters.length; idx++) {
+    const chapter = book.chapters[idx];
+    const paras = (chapter.content || '').split(/\n+/).filter(Boolean);
+    const isLast = idx === book.chapters.length - 1;
+
+    children.push(
+      spacer(in2t(1.2)),
+      new Paragraph({
+        children: [new TextRun({ text: `Chapter ${idx + 1}`, italics: true, size: 20, font: 'Times New Roman', color: '8C7050' })],
+        alignment: AlignmentType.CENTER,
+        spacing: { after: in2t(0.1) },
+      }),
+      new Paragraph({
+        children: [new TextRun({ text: chapter.title, bold: true, size: 36, font: 'Times New Roman' })],
+        alignment: AlignmentType.CENTER,
+        spacing: { after: in2t(0.4) },
+      }),
+      new Paragraph({
+        children: [new TextRun({ text: '* * *', size: 22, font: 'Times New Roman', color: '8C7050' })],
+        alignment: AlignmentType.CENTER,
+        spacing: { after: in2t(0.35) },
+      }),
+    );
+
+    if (chapter.imageUrl) {
+      try {
+        const dataURL = await fetchAsDataURL(chapter.imageUrl);
+        const base64 = dataURL.split(',')[1];
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        const maxWidthEmu = 914400 * 4;
+        const aspect = chapter.imageHeight && chapter.imageWidth
+          ? chapter.imageHeight / chapter.imageWidth : 0.75;
+        const heightEmu = Math.round(maxWidthEmu * aspect);
+        const imgType = dataURL.startsWith('data:image/png') ? 'png' : 'jpg';
+        children.push(new Paragraph({
+          children: [new ImageRun({ data: bytes, transformation: { width: maxWidthEmu, height: heightEmu }, type: imgType })],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: in2t(0.25) },
+        }));
+      } catch (e) {
+        console.warn('Could not load chapter image for Word:', e);
+      }
+    }
+
+    children.push(...paras.map((p, pIdx) => bodyPara(p, pIdx === 0)));
+    if (!isLast) children.push(new Paragraph({ children: [new PageBreak()] }));
+  }
 
   // ── Document ─────────────────────────────────────────────────────────────────
   const wordDoc = new Document({
@@ -477,3 +520,13 @@ export const exportToWord = async (book) => {
 
 // ─── Util ─────────────────────────────────────────────────────────────────────
 const sanitizeFilename = (name) => name.replace(/[^a-z0-9\-_ ]/gi, '_').trim();
+
+const fetchAsDataURL = (url) =>
+  fetch(url)
+    .then(r => r.blob())
+    .then(blob => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    }));

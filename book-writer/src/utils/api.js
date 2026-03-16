@@ -78,3 +78,13 @@ export const apiUnshareBook = async (bookId, recipientEmail) =>
 
 export const apiGetShares = async (bookId) =>
   request('GET', `/books/${bookId}/shares`);
+
+// ── Chapter Image API ──────────────────────────────────────────────────────────
+
+export const apiUploadChapterImage = async (bookId, chapterId, imageData) => {
+  const result = await request('POST', `/books/${bookId}/chapters/${chapterId}/image`, { imageData });
+  return result.imageUrl;
+};
+
+export const apiDeleteChapterImage = async (bookId, chapterId) =>
+  request('DELETE', `/books/${bookId}/chapters/${chapterId}/image`);

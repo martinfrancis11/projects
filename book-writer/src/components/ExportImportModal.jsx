@@ -16,7 +16,7 @@ export default function ExportImportModal({ book, onClose, onImport }) {
   const handleExportPDF = async () => {
     setExporting('pdf');
     try {
-      exportToPDF(book);
+      await exportToPDF(book);
     } catch (e) {
       console.error(e);
     } finally {

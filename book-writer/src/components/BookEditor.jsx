@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getCachedBooks, apiSaveBook } from '../utils/api';
 import { createChapter } from '../utils/storage';
+import { saveChapterImageLocal, deleteChapterImageLocal, mergeImagesIntoBook, compressImage } from '../utils/imageStorage';
+import { apiUploadChapterImage, apiDeleteChapterImage } from '../utils/api';
 import ExportImportModal from './ExportImportModal';
 import ShareModal from './ShareModal';
 import AudioPlayer from './AudioPlayer';
@@ -17,6 +19,11 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
   const [showShare, setShowShare]       = useState(false);
   const [showAudio, setShowAudio]       = useState(false);
   const saveTimer = useRef(null);
+  const imageInputRef = useRef(null);
+  const [deleteConfirmChapterId, setDeleteConfirmChapterId] = useState(null);
+  const [imageTargetChapterId, setImageTargetChapterId] = useState(null);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [imageError, setImageError] = useState('');
 
   // Load book from cache (already fetched at login)
   useEffect(() => {
@@ -24,8 +31,9 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
     const all = [...books, ...sharedBooks];
     const b = all.find(x => (x.bookId || x.id) === bookId);
     if (b) {
-      setBook(b);
-      setActiveChapterId(b.chapters?.[0]?.id || null);
+      const withImages = mergeImagesIntoBook(b);
+      setBook(withImages);
+      setActiveChapterId(withImages.chapters?.[0]?.id || null);
     }
   }, [bookId]);
 
@@ -37,7 +45,7 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
     if (activeChapter) setWordCount(countWords(activeChapter.content));
   }, [activeChapter]);
 
-  // Persist to API (debounced)
+  // Persist to API — imageUrl is just a string so it's safe to include in DynamoDB
   const persistBook = useCallback((updatedBook) => {
     const b = { ...updatedBook, updatedAt: new Date().toISOString() };
     apiSaveBook(b).then(() => setSaved(true)).catch(console.error);
@@ -97,6 +105,51 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
     const updated = { ...book, chapters: book.chapters.filter(c => c.id !== chapterId) };
     setBook(updated);
     if (activeChapterId === chapterId) setActiveChapterId(updated.chapters[0]?.id || null);
+    persistBook(updated);
+  };
+
+  const confirmDeleteChapter = (chapterId) => {
+    if (readOnly || book.chapters.length <= 1) return;
+    setDeleteConfirmChapterId(chapterId);
+  };
+
+  const handleChapterImage = async (chapterId, file) => {
+    if (!file || readOnly) return;
+    const bookId = book.bookId || book.id;
+    setImageUploading(true);
+    setImageError('');
+    try {
+      const { dataURL, width, height } = await compressImage(file);
+      const imageUrl = await apiUploadChapterImage(bookId, chapterId, dataURL);
+      saveChapterImageLocal(bookId, chapterId, imageUrl);
+      const updated = {
+        ...book,
+        chapters: book.chapters.map(c =>
+          c.id === chapterId ? { ...c, imageUrl, imageWidth: width, imageHeight: height } : c
+        ),
+      };
+      setBook(updated);
+      persistBook(updated);
+    } catch (e) {
+      console.error('Image upload failed:', e);
+      setImageError('Upload failed. Please try again.');
+    } finally {
+      setImageUploading(false);
+    }
+  };
+
+  const removeChapterImage = (chapterId) => {
+    if (readOnly) return;
+    const bookId = book.bookId || book.id;
+    deleteChapterImageLocal(bookId, chapterId);
+    apiDeleteChapterImage(bookId, chapterId).catch(console.error);
+    const updated = {
+      ...book,
+      chapters: book.chapters.map(c =>
+        c.id === chapterId ? { ...c, imageUrl: null, imageWidth: null, imageHeight: null } : c
+      ),
+    };
+    setBook(updated);
     persistBook(updated);
   };
 
@@ -198,7 +251,7 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
                     </span>
                     <span className="toc-words">{countWords(ch.content).toLocaleString()}w</span>
                     {!readOnly && book.chapters.length > 1 && (
-                      <button className="toc-delete" onClick={e => { e.stopPropagation(); deleteChapter(ch.id); }}>✕</button>
+                      <button className="toc-delete" onClick={e => { e.stopPropagation(); confirmDeleteChapter(ch.id); }}>✕</button>
                     )}
                   </div>
                 )}
@@ -215,6 +268,59 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
             <div className="page-header">
               <span className="page-book-title">{book.title}</span>
               <span className="page-chapter-title">{activeChapter?.title}</span>
+            </div>
+            <div className="chapter-image-zone">
+              {activeChapter?.imageUrl ? (
+                <div className="chapter-image-display">
+                  <img src={activeChapter.imageUrl} alt="Chapter illustration" className="chapter-image" />
+                  {!readOnly && (
+                    <button className="chapter-image-remove" onClick={() => removeChapterImage(activeChapterId)}>
+                      ✕ Remove Image
+                    </button>
+                  )}
+                </div>
+              ) : !readOnly ? (
+                <>
+                  <div
+                    className={`chapter-image-dropzone ${imageUploading ? 'uploading' : ''}`}
+                    onClick={() => { if (!imageUploading) { setImageTargetChapterId(activeChapterId); imageInputRef.current?.click(); } }}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={e => {
+                      e.preventDefault();
+                      if (imageUploading) return;
+                      const file = e.dataTransfer.files[0];
+                      if (file && file.type.startsWith('image/')) {
+                        setImageTargetChapterId(activeChapterId);
+                        handleChapterImage(activeChapterId, file);
+                      }
+                    }}
+                  >
+                    {imageUploading ? (
+                      <>
+                        <span className="chapter-image-icon">⏳</span>
+                        <span className="chapter-image-label">Uploading image…</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="chapter-image-icon">🖼</span>
+                        <span className="chapter-image-label">Click or drag an image for this chapter</span>
+                      </>
+                    )}
+                  </div>
+                  {imageError && <div className="chapter-image-error">{imageError}</div>}
+                </>
+              ) : null}
+              <input
+                type="file"
+                ref={imageInputRef}
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file && imageTargetChapterId) handleChapterImage(imageTargetChapterId, file);
+                  e.target.value = '';
+                }}
+              />
             </div>
             <div className="page-content">
               {activeChapter && (
@@ -252,6 +358,24 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
           book={book}
           onClose={() => setShowShare(false)}
         />
+      )}
+
+      {deleteConfirmChapterId && (
+        <div className="confirm-overlay" onClick={() => setDeleteConfirmChapterId(null)}>
+          <div className="confirm-dialog" onClick={e => e.stopPropagation()}>
+            <h3 className="confirm-title">Delete Chapter?</h3>
+            <p className="confirm-message">
+              "{book.chapters.find(c => c.id === deleteConfirmChapterId)?.title}" will be permanently deleted.
+            </p>
+            <div className="confirm-actions">
+              <button className="btn-cancel-confirm" onClick={() => setDeleteConfirmChapterId(null)}>Cancel</button>
+              <button className="btn-delete-confirm" onClick={() => {
+                deleteChapter(deleteConfirmChapterId);
+                setDeleteConfirmChapterId(null);
+              }}>Delete</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

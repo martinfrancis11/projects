@@ -76,6 +76,25 @@
   letter-spacing: 0.06em;
 }
 
+.btn-listen {
+  background: rgba(80,120,200,0.15);
+  border: 1px solid #2a4a8a;
+  color: #8aaadd;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-listen:hover {
+  background: rgba(80,120,200,0.28);
+  border-color: #8aaadd;
+  color: #aaccee;
+}
+
 .btn-export-import {
   background: rgba(212,168,85,0.12);
   border: 1px solid #4a3520;

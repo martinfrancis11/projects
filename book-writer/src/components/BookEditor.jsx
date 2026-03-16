@@ -3,6 +3,7 @@ import { getCachedBooks, apiSaveBook } from '../utils/api';
 import { createChapter } from '../utils/storage';
 import ExportImportModal from './ExportImportModal';
 import ShareModal from './ShareModal';
+import AudioPlayer from './AudioPlayer';
 import './BookEditor.css';
 
 export default function BookEditor({ bookId, readOnly, onBack }) {
@@ -14,6 +15,7 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
   const [wordCount, setWordCount]       = useState(0);
   const [showExportImport, setShowExportImport] = useState(false);
   const [showShare, setShowShare]       = useState(false);
+  const [showAudio, setShowAudio]       = useState(false);
   const saveTimer = useRef(null);
 
   // Load book from cache (already fetched at login)
@@ -139,6 +141,9 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
               ↗ Share
             </button>
           )}
+          <button className="btn-listen" onClick={() => setShowAudio(a => !a)}>
+            {showAudio ? '⏹ Close Player' : '▶ Listen'}
+          </button>
           <button className="btn-export-import" onClick={() => setShowExportImport(true)}>
             ⇅ Export / Import
           </button>
@@ -153,6 +158,15 @@ export default function BookEditor({ bookId, readOnly, onBack }) {
           )}
         </div>
       </div>
+
+      {/* Audio player */}
+      {showAudio && (
+        <AudioPlayer
+          text={activeChapter?.content || ''}
+          chapterTitle={activeChapter?.title || ''}
+          bookTitle={book.title}
+        />
+      )}
 
       {/* Main area */}
       <div className="editor-main">

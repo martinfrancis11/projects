@@ -10,6 +10,7 @@ import BrandDirectory from './pages/BrandDirectory';
 import Community from './pages/Community';
 import HealthInsights from './pages/HealthInsights';
 import Premium from './pages/Premium';
+import ScanHistory from './pages/ScanHistory';
 import './App.css';
 
 export default function App() {
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/health" element={<HealthInsights />} />
           <Route path="/premium" element={<Premium />} />
+          <Route path="/history" element={<ScanHistory />} />
         </Routes>
       </main>
       <OnboardingModal key={showHelp} onClose={closeHelp} />

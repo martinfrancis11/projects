@@ -1,0 +1,111 @@
+/* ============================================================
+   FabricIntel — CSS Theme Variables
+   Applied via data-theme and data-accent on <html>
+   ============================================================ */
+
+/* ── Dark mode (default) ──────────────────────────────────── */
+:root {
+  --bg-app:     #0f1923;
+  --bg-primary: #0a1628;
+  --bg-card:    #1a2332;
+  --bg-inset:   rgba(0, 0, 0, 0.2);
+  --bg-input:   #0f1923;
+  --bg-subtle:  rgba(255, 255, 255, 0.06);
+  --bg-subtle-hover: rgba(255, 255, 255, 0.12);
+  --bg-overlay: rgba(0, 0, 0, 0.75);
+
+  --border:        rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.1);
+  --border-strong: #2d3f55;
+
+  --text-primary:   #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+  --text-faint:     #475569;
+  --text-table:     #cbd5e1;
+
+  --accent:       #4ade80;
+  --accent-hover: #22c55e;
+  --accent-rgb:   74, 222, 128;
+  --accent-text:  #0f1923;
+
+  --shadow:    rgba(0, 0, 0, 0.4);
+  --shadow-lg: rgba(0, 0, 0, 0.6);
+
+  --navbar-bg:       #0a1628;
+  --navbar-border:   rgba(255, 255, 255, 0.07);
+  --scrollbar-track: #0a1628;
+  --scrollbar-thumb: #2d3f55;
+}
+
+/* ── Light mode ───────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-app:     #f1f5f9;
+  --bg-primary: #e2e8f0;
+  --bg-card:    #ffffff;
+  --bg-inset:   rgba(0, 0, 0, 0.04);
+  --bg-input:   #f8fafc;
+  --bg-subtle:  rgba(0, 0, 0, 0.04);
+  --bg-subtle-hover: rgba(0, 0, 0, 0.08);
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  --border:        rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.12);
+  --border-strong: #cbd5e1;
+
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #64748b;
+  --text-faint:     #94a3b8;
+  --text-table:     #334155;
+
+  --accent-text: #ffffff;
+
+  --shadow:    rgba(0, 0, 0, 0.1);
+  --shadow-lg: rgba(0, 0, 0, 0.2);
+
+  --navbar-bg:       #ffffff;
+  --navbar-border:   rgba(0, 0, 0, 0.08);
+  --scrollbar-track: #e2e8f0;
+  --scrollbar-thumb: #cbd5e1;
+}
+
+/* ── Accent: Green (default) ──────────────────────────────── */
+:root,
+[data-accent="green"] {
+  --accent:       #4ade80;
+  --accent-hover: #22c55e;
+  --accent-rgb:   74, 222, 128;
+}
+[data-theme="light"][data-accent="green"],
+[data-theme="light"] {
+  --accent-text: #0f172a;
+}
+
+/* ── Accent: Blue ─────────────────────────────────────────── */
+[data-accent="blue"] {
+  --accent:       #60a5fa;
+  --accent-hover: #3b82f6;
+  --accent-rgb:   96, 165, 250;
+}
+
+/* ── Accent: Purple ───────────────────────────────────────── */
+[data-accent="purple"] {
+  --accent:       #a78bfa;
+  --accent-hover: #8b5cf6;
+  --accent-rgb:   167, 139, 250;
+}
+
+/* ── Accent: Orange ───────────────────────────────────────── */
+[data-accent="orange"] {
+  --accent:       #fb923c;
+  --accent-hover: #f97316;
+  --accent-rgb:   251, 146, 60;
+}
+
+/* ── Accent: Pink ─────────────────────────────────────────── */
+[data-accent="pink"] {
+  --accent:       #f472b6;
+  --accent-hover: #ec4899;
+  --accent-rgb:   244, 114, 182;
+}

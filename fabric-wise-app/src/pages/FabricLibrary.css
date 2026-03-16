@@ -5,8 +5,8 @@
 .fabric-lib-search-wrap {
   display: flex;
   align-items: center;
-  background: #1a2332;
-  border: 1.5px solid rgba(255,255,255,0.1);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-medium);
   border-radius: 12px;
   margin: 28px 0 20px;
   transition: border-color 0.2s;
@@ -14,12 +14,12 @@
 }
 
 .fabric-lib-search-wrap:focus-within {
-  border-color: #4ade80;
+  border-color: var(--accent);
 }
 
 .fabric-lib-search-icon {
   padding: 0 14px;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 1rem;
   flex-shrink: 0;
 }
@@ -29,19 +29,19 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 0.95rem;
   padding: 13px 0;
   font-family: inherit;
 }
 
 .fabric-lib-search::placeholder {
-  color: #475569;
+  color: var(--text-faint);
 }
 
 .fabric-lib-clear {
   padding: 0 16px;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.85rem;
   cursor: pointer;
   background: none;
@@ -50,7 +50,7 @@
 }
 
 .fabric-lib-clear:hover {
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 .fabric-lib-filters {
@@ -66,34 +66,34 @@
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  border: 1.5px solid rgba(255,255,255,0.1);
+  border: 1.5px solid var(--border-medium);
   background: transparent;
-  color: #94a3b8;
+  color: var(--text-secondary);
   transition: all 0.2s;
 }
 
 .fabric-lib-filter:hover {
-  border-color: rgba(74, 222, 128, 0.3);
-  color: #e2e8f0;
+  border-color: rgba(var(--accent-rgb), 0.3);
+  color: var(--text-primary);
 }
 
 .fabric-lib-filter.active {
-  background: rgba(74, 222, 128, 0.15);
-  border-color: #4ade80;
-  color: #4ade80;
+  background: rgba(var(--accent-rgb), 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .fabric-lib-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.85rem;
   margin-bottom: 24px;
 }
 
 .fabric-lib-reset {
-  color: #4ade80;
+  color: var(--accent);
   font-size: 0.85rem;
   cursor: pointer;
   background: none;
@@ -115,7 +115,7 @@
 .fabric-lib-empty {
   text-align: center;
   padding: 80px 24px;
-  color: #64748b;
+  color: var(--text-muted);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,7 +131,7 @@
 }
 
 .fabric-lib-empty strong {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 @media (max-width: 900px) {

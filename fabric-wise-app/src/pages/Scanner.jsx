@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fabrics } from '../data/fabrics';
 import { fetchProductByBarcode, detectFabrics } from '../utils/openProductsApi';
+import { saveScan } from '../utils/scanHistory';
 import './Scanner.css';
 
 // Fallback mock barcodes for testing (used if API returns nothing)
@@ -32,10 +33,25 @@ function ApiResult({ product, onReset }) {
   const hasMatches = product.matchedFabrics.length > 0;
   return (
     <div className="scanner-result">
-      {/* Source badge */}
-      <div className="scanner-source-badge">
-        <span className="scanner-source-icon">🌐</span>
-        {product.source || 'Open Products Facts'}
+      {/* Source badge + cache indicator */}
+      <div className="scanner-badges">
+        {product.fromCache ? (
+          <div className="scanner-source-badge scanner-source-badge--cache">
+            <span className="scanner-source-icon">⚡</span>
+            From Database
+          </div>
+        ) : (
+          <div className="scanner-source-badge">
+            <span className="scanner-source-icon">🌐</span>
+            {product.source || 'Open Products Facts'}
+          </div>
+        )}
+        {product.fromCache && product.source && (
+          <div className="scanner-source-badge scanner-source-badge--origin">
+            <span className="scanner-source-icon">🌐</span>
+            via {product.source}
+          </div>
+        )}
       </div>
 
       {/* Product info */}
@@ -193,13 +209,17 @@ export default function Scanner() {
     const mockFabricId = mockBarcodes[trimmed];
     if (mockFabricId) {
       const fabric = fabrics.find(f => f.id === mockFabricId);
-      if (fabric) { setLocalFabric(fabric); setStatus('local-result'); return; }
+      if (fabric) {
+        saveScan({ barcode: trimmed, name: fabric.name, brand: '', source: 'FabricIntel Database', imageUrl: '', materialsRaw: '', matchedFabrics: [fabric] });
+        setLocalFabric(fabric); setStatus('local-result'); return;
+      }
     }
 
-    // 2. Try Open Products Facts / Open Beauty Facts API
+    // 2. Try Lambda proxy (UPCitemdb + Open Products Facts)
     setStatus('loading');
     const product = await fetchProductByBarcode(trimmed);
     if (product) {
+      saveScan(product);
       setApiProduct(product);
       setStatus('api-result');
       return;
@@ -208,7 +228,7 @@ export default function Scanner() {
     // 3. Try fabric keywords / ISO codes in the raw input itself
     const fromText = detectFabrics(trimmed);
     if (fromText.length > 0) {
-      setApiProduct({
+      const syntheticProduct = {
         barcode: trimmed,
         name: trimmed,
         brand: '',
@@ -217,9 +237,12 @@ export default function Scanner() {
         materialsRaw: trimmed,
         imageUrl: '',
         country: '',
+        source: 'Manual Entry',
         combinedText: trimmed,
         matchedFabrics: fromText,
-      });
+      };
+      saveScan(syntheticProduct);
+      setApiProduct(syntheticProduct);
       setStatus('api-result');
       return;
     }
@@ -227,6 +250,7 @@ export default function Scanner() {
     // 4. Try direct fabric ID match (e.g. user typed "organic-cotton")
     const directFabric = fabrics.find(f => f.id === trimmed.toLowerCase());
     if (directFabric) {
+      saveScan({ barcode: trimmed, name: directFabric.name, brand: '', source: 'FabricIntel Database', imageUrl: '', materialsRaw: '', matchedFabrics: [directFabric] });
       setLocalFabric(directFabric);
       setStatus('local-result');
       return;

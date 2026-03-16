@@ -13,13 +13,14 @@ html {
 }
 
 body {
-  background-color: #0f1923;
-  color: #e2e8f0;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 a {
@@ -53,16 +54,16 @@ ul, ol {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a1628;
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2d3f55;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3d5470;
+  background: var(--border-strong);
 }
 
 /* =====================
@@ -78,14 +79,14 @@ ul, ol {
   padding: 48px 0;
 }
 
-.text-green  { color: #4ade80; }
+.text-green  { color: var(--accent); }
 .text-amber  { color: #f59e0b; }
 .text-red    { color: #ef4444; }
-.text-muted  { color: #64748b; }
-.text-white  { color: #e2e8f0; }
+.text-muted  { color: var(--text-muted); }
+.text-white  { color: var(--text-primary); }
 
-.bg-card     { background: #1a2332; }
-.bg-dark     { background: #0f1923; }
+.bg-card     { background: var(--bg-card); }
+.bg-dark     { background: var(--bg-app); }
 
 .flex        { display: flex; }
 .flex-col    { flex-direction: column; }
@@ -146,14 +147,14 @@ ul, ol {
 }
 
 .btn-primary {
-  background: #4ade80;
-  color: #0f1923;
+  background: var(--accent);
+  color: var(--accent-text);
 }
 
 .btn-primary:hover {
-  background: #22c55e;
+  background: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(74, 222, 128, 0.3);
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.3);
 }
 
 .btn-amber {
@@ -169,22 +170,22 @@ ul, ol {
 
 .btn-outline {
   background: transparent;
-  color: #4ade80;
-  border: 1.5px solid #4ade80;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
 }
 
 .btn-outline:hover {
-  background: rgba(74, 222, 128, 0.1);
+  background: rgba(var(--accent-rgb), 0.1);
   transform: translateY(-1px);
 }
 
 .btn-ghost {
-  background: rgba(255,255,255,0.06);
-  color: #e2e8f0;
+  background: var(--bg-subtle);
+  color: var(--text-primary);
 }
 
 .btn-ghost:hover {
-  background: rgba(255,255,255,0.12);
+  background: var(--bg-subtle-hover);
 }
 
 /* =====================
@@ -209,8 +210,8 @@ ul, ol {
    Shared Card
    ===================== */
 .card {
-  background: #1a2332;
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 20px;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -218,29 +219,29 @@ ul, ol {
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  border-color: rgba(74, 222, 128, 0.2);
+  box-shadow: 0 8px 32px var(--shadow);
+  border-color: rgba(var(--accent-rgb), 0.2);
 }
 
 /* =====================
    Page Header
    ===================== */
 .page-header {
-  background: linear-gradient(180deg, #0a1628 0%, #0f1923 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-app) 100%);
   padding: 48px 24px 32px;
   text-align: center;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid var(--border);
 }
 
 .page-header h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .page-header p {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 1.05rem;
 }
 
@@ -260,12 +261,12 @@ ul, ol {
 .section-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .section-subtitle {
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 32px;
 }
 

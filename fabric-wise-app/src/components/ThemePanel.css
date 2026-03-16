@@ -1,0 +1,126 @@
+.theme-panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}
+
+.theme-panel {
+  position: fixed;
+  top: 72px;
+  right: 16px;
+  z-index: 200;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 16px;
+  width: 220px;
+  box-shadow: 0 16px 48px var(--shadow-lg);
+  animation: theme-panel-in 0.15s ease;
+}
+
+@keyframes theme-panel-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.theme-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+
+.theme-panel-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.theme-panel-close:hover {
+  color: var(--text-primary);
+}
+
+.theme-panel-section {
+  margin-bottom: 16px;
+}
+
+.theme-panel-section:last-child {
+  margin-bottom: 0;
+}
+
+.theme-panel-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+/* Mode buttons */
+.theme-panel-modes {
+  display: flex;
+  gap: 8px;
+}
+
+.theme-mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.theme-mode-btn:hover {
+  background: var(--bg-subtle-hover);
+  color: var(--text-primary);
+}
+
+.theme-mode-btn.active {
+  background: rgba(var(--accent-rgb), 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Accent swatches */
+.theme-panel-accents {
+  display: flex;
+  gap: 10px;
+}
+
+.theme-accent-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--swatch);
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+  outline: none;
+}
+
+.theme-accent-btn:hover {
+  transform: scale(1.15);
+}
+
+.theme-accent-btn.active {
+  border-color: var(--text-primary);
+  transform: scale(1.1);
+}

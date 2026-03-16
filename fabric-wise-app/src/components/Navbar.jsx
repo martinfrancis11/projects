@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
+import ThemePanel from './ThemePanel';
 import './Navbar.css';
 
 const navLinks = [
   { to: '/fabrics',   label: 'Fabrics',    icon: '🧵' },
   { to: '/scanner',  label: 'Scanner',    icon: '📷' },
+  { to: '/history',  label: 'History',    icon: '🕓' },
   { to: '/brands',   label: 'Brands',     icon: '🏷️' },
   { to: '/community',label: 'Community',  icon: '💬' },
   { to: '/health',   label: 'Health',     icon: '💚' },
 ];
 
 export default function Navbar({ onHelp }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen]     = useState(false);
+  const [themeOpen, setThemeOpen]   = useState(false);
+  const { theme } = useTheme();
 
   const close = () => setMenuOpen(false);
 
@@ -40,6 +45,16 @@ export default function Navbar({ onHelp }) {
             </li>
           ))}
         </ul>
+
+        {/* Theme toggle */}
+        <button
+          className="navbar-theme-btn"
+          onClick={() => setThemeOpen(v => !v)}
+          aria-label="Appearance settings"
+          title="Appearance"
+        >
+          {theme === 'dark' ? '🌙' : '☀️'}
+        </button>
 
         {/* Help button */}
         <button className="navbar-help" onClick={onHelp} aria-label="Help">
@@ -78,6 +93,9 @@ export default function Navbar({ onHelp }) {
             {label}
           </NavLink>
         ))}
+        <button className="navbar-mobile-theme" onClick={() => { close(); setThemeOpen(true); }}>
+          {theme === 'dark' ? '🌙' : '☀️'} Appearance
+        </button>
         <button className="navbar-mobile-help" onClick={() => { close(); onHelp?.(); }}>
           ? Help
         </button>
@@ -85,6 +103,9 @@ export default function Navbar({ onHelp }) {
           ⭐ Go Premium
         </Link>
       </div>
+
+      {/* Theme panel */}
+      {themeOpen && <ThemePanel onClose={() => setThemeOpen(false)} />}
     </nav>
   );
 }

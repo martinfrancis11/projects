@@ -14,18 +14,18 @@
 }
 
 .brand-dir-meta {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.85rem;
   margin-bottom: 16px;
 }
 
 .brand-dir-disclaimer {
-  background: rgba(100, 116, 139, 0.1);
-  border: 1px solid rgba(100, 116, 139, 0.2);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-medium);
   border-radius: 10px;
   padding: 12px 16px;
   font-size: 0.82rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 28px;
   line-height: 1.5;
 }
@@ -38,8 +38,8 @@
 
 /* Brand card */
 .brand-card {
-  background: #1a2332;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 22px;
   display: flex;
@@ -50,8 +50,8 @@
 
 .brand-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 32px rgba(0,0,0,0.4);
-  border-color: rgba(74, 222, 128, 0.15);
+  box-shadow: 0 10px 32px var(--shadow);
+  border-color: rgba(var(--accent-rgb), 0.15);
 }
 
 .brand-card-header {
@@ -73,7 +73,7 @@
 .brand-card-title h3 {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
@@ -86,7 +86,7 @@
 
 .brand-card-price {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
@@ -104,7 +104,7 @@
 
 .brand-card-score-sub {
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Score bar */
@@ -118,12 +118,12 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .brand-score-bar-track {
   height: 8px;
-  background: rgba(255,255,255,0.07);
+  background: var(--bg-subtle);
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -136,7 +136,7 @@
 
 .brand-card-desc {
   font-size: 0.87rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
@@ -149,7 +149,7 @@
 
 .brand-card-section-label {
   font-size: 0.78rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -169,13 +169,13 @@
 }
 
 .brand-chip--material {
-  background: rgba(100, 116, 139, 0.15);
-  color: #94a3b8;
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
 }
 
 .brand-chip--cert {
-  background: rgba(74, 222, 128, 0.1);
-  color: #4ade80;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
 }
 
 /* Footer */
@@ -184,11 +184,11 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid var(--border);
 }
 
 .brand-card-link {
-  color: #4ade80;
+  color: var(--accent);
   font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
@@ -201,7 +201,7 @@
 
 .brand-card-affiliate {
   font-size: 0.7rem;
-  color: #334155;
+  color: var(--text-faint);
   font-style: italic;
 }
 

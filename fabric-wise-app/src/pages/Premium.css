@@ -4,7 +4,7 @@
 
 /* Hero */
 .premium-hero {
-  background: linear-gradient(135deg, #0a1628 0%, #1a1200 60%, #0f1923 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-app) 100%);
   padding: 56px 24px 48px;
   text-align: center;
   border-bottom: 1px solid rgba(245, 158, 11, 0.15);
@@ -42,13 +42,13 @@
 .premium-hero h1 {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 800;
-  color: #e2e8f0;
+  color: var(--text-primary);
   margin-bottom: 12px;
   letter-spacing: -0.02em;
 }
 
 .premium-hero p {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 1.05rem;
   max-width: 520px;
   margin: 0 auto;
@@ -77,16 +77,16 @@
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  border: 1.5px solid rgba(255,255,255,0.1);
+  border: 1.5px solid var(--border-medium);
   background: transparent;
-  color: #94a3b8;
+  color: var(--text-secondary);
   transition: all 0.2s;
   font-family: inherit;
 }
 
 .billing-btn:hover {
   border-color: rgba(245, 158, 11, 0.3);
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 .billing-btn.active {
@@ -106,7 +106,7 @@
 
 /* Price card */
 .premium-price-card {
-  background: linear-gradient(135deg, #1a2332, #0f1c2e);
+  background: var(--bg-card);
   border: 1.5px solid rgba(245, 158, 11, 0.3);
   border-radius: 16px;
   padding: 28px 32px;
@@ -147,19 +147,19 @@
 
 .premium-period {
   font-size: 1rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .premium-billed {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .premium-save-badge {
   display: inline-flex;
   padding: 3px 10px;
-  background: rgba(74, 222, 128, 0.12);
-  color: #4ade80;
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--accent);
   border-radius: 9999px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -180,15 +180,15 @@
 
 .premium-guarantee {
   font-size: 0.78rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .premium-clicked {
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
   border-radius: 10px;
   padding: 12px 18px;
-  color: #4ade80;
+  color: var(--accent);
   font-size: 0.88rem;
   max-width: 320px;
   line-height: 1.4;
@@ -201,7 +201,7 @@
 
 .comparison-table-wrap {
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--border);
   overflow: hidden;
 }
 
@@ -212,18 +212,18 @@
 }
 
 .comparison-table thead tr {
-  background: #0a1628;
+  background: var(--bg-primary);
 }
 
 .comparison-table th {
   padding: 14px 20px;
   text-align: center;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 700;
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid var(--border);
 }
 
 .comparison-table th:first-child {
@@ -237,14 +237,14 @@
 
 .comparison-table td {
   padding: 11px 20px;
-  color: #94a3b8;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
   text-align: center;
 }
 
 .comparison-table td:first-child {
   text-align: left;
-  color: #cbd5e1;
+  color: var(--text-table);
 }
 
 .comparison-table tbody tr:last-child td {
@@ -252,7 +252,7 @@
 }
 
 .row-even td {
-  background: rgba(255,255,255,0.015);
+  background: var(--bg-subtle);
 }
 
 .col-premium {
@@ -264,8 +264,8 @@
   font-size: 1rem;
 }
 
-.check.green { color: #4ade80; }
-.check.red   { color: #475569; }
+.check.green { color: var(--accent); }
+.check.red   { color: var(--text-faint); }
 
 /* Perks grid */
 .premium-perks {
@@ -279,8 +279,8 @@
 }
 
 .perk-card {
-  background: #1a2332;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 20px;
   display: flex;
@@ -291,7 +291,7 @@
 
 .perk-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 28px var(--shadow);
 }
 
 .perk-card-header {
@@ -308,7 +308,7 @@
 .perk-card-header h3 {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
   flex: 1;
 }
 
@@ -324,14 +324,14 @@
 
 .perk-card p {
   font-size: 0.84rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
 /* Final CTA */
 .premium-final-cta {
-  background: linear-gradient(135deg, #0f2a1a 0%, #0a1628 100%);
-  border: 1px solid rgba(74, 222, 128, 0.15);
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-app));
+  border: 1px solid rgba(var(--accent-rgb), 0.15);
   border-radius: 16px;
   padding: 48px 32px;
   text-align: center;
@@ -340,12 +340,12 @@
 .premium-final-cta h2 {
   font-size: 1.6rem;
   font-weight: 800;
-  color: #e2e8f0;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .premium-final-cta > p {
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 28px;
 }
 

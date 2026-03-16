@@ -13,7 +13,7 @@
 
 .fd-not-found h2 {
   font-size: 1.5rem;
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 /* Breadcrumb */
@@ -24,11 +24,11 @@
   padding-top: 20px;
   padding-bottom: 8px;
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .fd-back {
-  color: #4ade80;
+  color: var(--accent);
   font-weight: 600;
   cursor: pointer;
   background: none;
@@ -43,21 +43,21 @@
 }
 
 .fd-bc-sep {
-  color: #334155;
+  color: var(--text-faint);
 }
 
 .fd-bc-link {
-  color: #64748b;
+  color: var(--text-muted);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .fd-bc-link:hover {
-  color: #4ade80;
+  color: var(--accent);
 }
 
 .fd-bc-current {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 /* Hero */
@@ -83,13 +83,13 @@
 .fd-hero-name {
   font-size: 2.2rem;
   font-weight: 800;
-  color: #e2e8f0;
+  color: var(--text-primary);
   margin-bottom: 14px;
   letter-spacing: -0.02em;
 }
 
 .fd-hero-desc {
-  color: #94a3b8;
+  color: var(--text-secondary);
   line-height: 1.7;
   font-size: 1rem;
   margin-bottom: 24px;
@@ -103,7 +103,7 @@
 }
 
 .fd-eco-label {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -133,7 +133,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.25);
+  background: var(--bg-inset);
   transition: box-shadow 0.3s;
 }
 
@@ -145,7 +145,7 @@
 
 .fd-score-label {
   font-size: 0.65rem;
-  color: #64748b;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-top: 2px;
@@ -160,13 +160,13 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.82rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
 .fd-natural-bar-track {
   height: 8px;
-  background: rgba(255,255,255,0.08);
+  background: var(--bg-subtle);
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -186,7 +186,7 @@
 }
 
 .fd-allergen-label {
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .fd-allergen-val {
@@ -203,7 +203,7 @@
 .fd-section-title {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
   margin-bottom: 20px;
 }
 
@@ -215,8 +215,8 @@
 }
 
 .fd-prop {
-  background: #1a2332;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px;
 }
@@ -237,13 +237,13 @@
 .fd-prop-label {
   flex: 1;
   font-size: 0.88rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .fd-prop-value {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 .fd-prop-bar-track {
@@ -263,8 +263,8 @@
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  background: rgba(74, 222, 128, 0.06);
-  border: 1px solid rgba(74, 222, 128, 0.15);
+  background: rgba(var(--accent-rgb), 0.06);
+  border: 1px solid rgba(var(--accent-rgb), 0.15);
   border-radius: 12px;
   padding: 20px;
 }
@@ -277,12 +277,12 @@
 .fd-health-notes h3 {
   font-size: 1rem;
   font-weight: 700;
-  color: #4ade80;
+  color: var(--accent);
   margin-bottom: 4px;
 }
 
 .fd-health-notes p {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.6;
 }
@@ -295,8 +295,8 @@
 }
 
 .fd-list-card {
-  background: #1a2332;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 20px;
 }
@@ -305,11 +305,11 @@
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 14px;
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 .fd-list-card--green {
-  border-top: 3px solid #4ade80;
+  border-top: 3px solid var(--accent);
 }
 
 .fd-list-card--red {
@@ -324,7 +324,7 @@
 
 .fd-list-card li {
   font-size: 0.88rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   padding-left: 16px;
   position: relative;
   line-height: 1.4;
@@ -334,7 +334,7 @@
   content: '✓';
   position: absolute;
   left: 0;
-  color: #4ade80;
+  color: var(--accent);
   font-size: 0.8rem;
 }
 
@@ -346,7 +346,7 @@
 }
 
 .fd-list-none {
-  color: #475569 !important;
+  color: var(--text-faint) !important;
   font-style: italic;
 }
 
@@ -358,8 +358,8 @@
 }
 
 .fd-review-card {
-  background: #1a2332;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 20px;
 }
@@ -378,7 +378,7 @@
 
 .fd-review-name {
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -388,8 +388,8 @@
 
 .fd-review-verified {
   font-size: 0.72rem;
-  color: #4ade80;
-  background: rgba(74, 222, 128, 0.1);
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.1);
   padding: 1px 7px;
   border-radius: 9999px;
   font-weight: 600;
@@ -398,27 +398,27 @@
 .fd-review-date {
   margin-left: auto;
   font-size: 0.78rem;
-  color: #64748b;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
 .fd-review-title {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .fd-review-body {
   font-size: 0.88rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 12px;
 }
 
 .fd-review-likes {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Related */
@@ -432,8 +432,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #1a2332;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 14px 20px;
   text-decoration: none;
@@ -442,7 +442,7 @@
 
 .fd-related-card:hover {
   transform: translateX(4px);
-  border-color: rgba(74, 222, 128, 0.2);
+  border-color: rgba(var(--accent-rgb), 0.2);
 }
 
 .fd-related-score {
@@ -460,14 +460,14 @@
 
 .fd-related-name {
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 0.95rem;
   margin-bottom: 4px;
 }
 
 .fd-related-arrow {
   margin-left: auto;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 1.2rem;
 }
 

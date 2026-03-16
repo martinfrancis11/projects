@@ -1,0 +1,218 @@
+.brand-directory {
+  min-height: 100vh;
+}
+
+.brand-dir-container {
+  padding: 28px 24px 48px;
+}
+
+.brand-dir-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.brand-dir-meta {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.brand-dir-disclaimer {
+  background: rgba(100, 116, 139, 0.1);
+  border: 1px solid rgba(100, 116, 139, 0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.brand-dir-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Brand card */
+.brand-card {
+  background: #1a2332;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.brand-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.4);
+  border-color: rgba(74, 222, 128, 0.15);
+}
+
+.brand-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.brand-card-logo {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.brand-card-title {
+  flex: 1;
+}
+
+.brand-card-title h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 6px;
+}
+
+.brand-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.brand-card-price {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.brand-card-score {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.brand-card-score-num {
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.brand-card-score-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* Score bar */
+.brand-score-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.brand-score-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.brand-score-bar-track {
+  height: 8px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.brand-score-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s ease;
+}
+
+.brand-card-desc {
+  font-size: 0.87rem;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+/* Sections */
+.brand-card-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.brand-card-section-label {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.brand-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.brand-chip {
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-weight: 500;
+}
+
+.brand-chip--material {
+  background: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+}
+
+.brand-chip--cert {
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+}
+
+/* Footer */
+.brand-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.brand-card-link {
+  color: #4ade80;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.brand-card-link:hover {
+  opacity: 0.75;
+}
+
+.brand-card-affiliate {
+  font-size: 0.7rem;
+  color: #334155;
+  font-style: italic;
+}
+
+/* amber badge override */
+.badge-amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+@media (max-width: 768px) {
+  .brand-dir-grid {
+    grid-template-columns: 1fr;
+  }
+}

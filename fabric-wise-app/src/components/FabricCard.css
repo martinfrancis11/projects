@@ -1,0 +1,149 @@
+.fabric-card {
+  background: #1a2332;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.fabric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--score-color, #4ade80);
+  opacity: 0.7;
+}
+
+.fabric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  border-color: rgba(74, 222, 128, 0.25);
+}
+
+.fabric-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fabric-card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.fabric-card-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2.5px solid;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.fabric-card-score-num {
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.fabric-card-score-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fabric-card-note {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.fabric-card-props {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.fabric-card-prop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+}
+
+.fabric-card-prop-icon {
+  font-size: 0.9rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.fabric-card-prop-label {
+  color: #64748b;
+  flex: 1;
+}
+
+.fabric-card-prop-val {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.fabric-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fabric-card-tag {
+  font-size: 0.72rem;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.08);
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-weight: 500;
+}
+
+.fabric-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.8rem;
+}
+
+.fabric-card-natural {
+  color: #64748b;
+}
+
+.fabric-card-cta {
+  color: #4ade80;
+  font-weight: 600;
+  transition: gap 0.2s;
+}
+
+.fabric-card:hover .fabric-card-cta {
+  letter-spacing: 0.02em;
+}

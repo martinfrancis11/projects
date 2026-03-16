@@ -2,6 +2,9 @@ export const fabrics = [
   {
     id: 'organic-cotton',
     name: 'Organic Cotton',
+    isoCode: 'CO',
+    isoName: 'Cotton (GOTS Certified)',
+    keywords: ['organic cotton'],
     category: 'natural',
     breathability: 'excellent',
     skinSensitivity: 'very-low',
@@ -22,6 +25,9 @@ export const fabrics = [
   {
     id: 'regular-cotton',
     name: 'Regular Cotton',
+    isoCode: 'CO',
+    isoName: 'Cotton (ISO 2076)',
+    keywords: ['cotton', '100% cotton', 'coton', 'baumwolle', 'algodón'],
     category: 'natural',
     breathability: 'good',
     skinSensitivity: 'low',
@@ -42,6 +48,9 @@ export const fabrics = [
   {
     id: 'bamboo-viscose',
     name: 'Bamboo Viscose',
+    isoCode: 'CV',
+    isoName: 'Viscose / Bamboo Viscose (ISO 2076)',
+    keywords: ['bamboo', 'bamboo viscose', 'bamboo rayon', 'viscose bamboo'],
     category: 'semi-natural',
     breathability: 'excellent',
     skinSensitivity: 'very-low',
@@ -62,6 +71,9 @@ export const fabrics = [
   {
     id: 'hemp',
     name: 'Hemp',
+    isoCode: 'HA',
+    isoName: 'Hemp (ISO 2076)',
+    keywords: ['hemp', 'chanvre', 'hanf'],
     category: 'natural',
     breathability: 'good',
     skinSensitivity: 'low',
@@ -82,6 +94,9 @@ export const fabrics = [
   {
     id: 'tencel',
     name: 'Tencel (Lyocell)',
+    isoCode: 'CLY',
+    isoName: 'Lyocell (ISO 2076)',
+    keywords: ['lyocell', 'tencel', 'modal', 'cly'],
     category: 'semi-natural',
     breathability: 'excellent',
     skinSensitivity: 'very-low',
@@ -102,6 +117,9 @@ export const fabrics = [
   {
     id: 'polyester',
     name: 'Polyester',
+    isoCode: 'PES',
+    isoName: 'Polyester (ISO 2076)',
+    keywords: ['polyester', 'pes', 'polyéster', 'polyestère', 'pet'],
     category: 'synthetic',
     breathability: 'poor',
     skinSensitivity: 'moderate',
@@ -122,6 +140,9 @@ export const fabrics = [
   {
     id: 'nylon',
     name: 'Nylon',
+    isoCode: 'PA',
+    isoName: 'Polyamide / Nylon (ISO 2076)',
+    keywords: ['nylon', 'polyamide', 'pa ', 'pa6', 'pa66', 'nylon 6'],
     category: 'synthetic',
     breathability: 'poor',
     skinSensitivity: 'moderate',
@@ -142,6 +163,9 @@ export const fabrics = [
   {
     id: 'acrylic',
     name: 'Acrylic',
+    isoCode: 'PAN',
+    isoName: 'Acrylic (ISO 2076)',
+    keywords: ['acrylic', 'acrylique', 'acryl', 'pan', 'polyacrylonitrile'],
     category: 'synthetic',
     breathability: 'very-poor',
     skinSensitivity: 'high',
@@ -162,6 +186,9 @@ export const fabrics = [
   {
     id: 'spandex',
     name: 'Spandex / Elastane',
+    isoCode: 'EL',
+    isoName: 'Elastane (ISO 2076)',
+    keywords: ['elastane', 'spandex', 'lycra', 'el ', 'elastan', 'éLasthanne'],
     category: 'synthetic',
     breathability: 'very-low',
     skinSensitivity: 'moderate',
